@@ -9,7 +9,7 @@ export interface SectionHeadingProps extends React.HTMLAttributes<HTMLHeadingEle
 
 const SectionHeading = React.forwardRef<HTMLHeadingElement, SectionHeadingProps>(
   ({ className, level = 2, children, subtitle, ...props }, ref) => {
-    const baseStyles = 'font-semibold text-gray-900 tracking-tight';
+    const baseStyles = 'font-semibold text-text-primary tracking-tight';
     
     const levelStyles = {
       1: 'text-4xl md:text-5xl',
@@ -25,12 +25,16 @@ const SectionHeading = React.forwardRef<HTMLHeadingElement, SectionHeadingProps>
     };
     
     return (
-      <div className="text-center mb-12 md:mb-16">
+      <div className="text-center mb-16 md:mb-24">
         {level === 1 && <h1 {...headingProps} />}
-        {level === 2 && <h2 {...headingProps} />}
+        {level === 2 && (
+           <h2 className={cn("text-3xl md:text-[44px] font-semibold tracking-tight text-text-primary mb-4", className)} ref={ref}>
+             {children}
+           </h2>
+        )}
         {level === 3 && <h3 {...headingProps} />}
         {subtitle && (
-          <p className="mt-4 text-lg text-gray-500 max-w-2xl mx-auto">
+          <p className="text-lg text-text-secondary opacity-70 max-w-2xl mx-auto leading-relaxed">
             {subtitle}
           </p>
         )}

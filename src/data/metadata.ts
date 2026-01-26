@@ -6,26 +6,25 @@
 import type { SEOMetadata } from '../lib/types';
 
 export const siteMetadata: SEOMetadata = {
-  title: 'Arnav Tiwari - Software Engineer | React & .NET Developer',
-  description: 'Software Engineering student at IIIT Nagpur with expertise in React, .NET MVC, and full-stack development. Currently interning at Hitachi, building safety-critical industrial systems.',
+  title: 'Arnav Tiwari – Software Engineer | Full Stack, AI Systems',
+  description: 'Software engineering student skilled in full-stack development, AI-powered applications, and scalable systems. Experienced with React, Next.js, Node.js, and cloud-native tools.',
   keywords: [
     'Arnav Tiwari',
     'Software Engineer',
-    'React Developer',
-    '.NET Developer',
     'Full Stack Developer',
-    'IIIT Nagpur',
-    'Hitachi Intern',
-    'JavaScript',
-    'TypeScript',
+    'Next.js Developer',
+    'React Developer',
     'Node.js',
+    'AI Applications',
+    'LLM Engineering',
+    'PostgreSQL',
     'MongoDB',
-    'Web Development',
-    'Frontend Developer',
-    'Backend Developer'
+    'TypeScript',
+    'IIIT Nagpur',
+    'India'
   ],
-  ogTitle: 'Arnav Tiwari - Software Engineer & Full Stack Developer',
-  ogDescription: 'Experienced software engineer specializing in React and .NET MVC development. Building safety-critical systems at Hitachi with proven track record in full-stack development.',
+  ogTitle: 'Arnav Tiwari – Software Engineer & Full Stack Developer',
+  ogDescription: 'Full Stack & AI-focused software engineer building production-ready systems using modern web technologies and cloud platforms.',
   ogImage: '/images/og-image.jpg',
   canonicalUrl: 'https://arnavtiwari.dev'
 };
@@ -53,14 +52,13 @@ export const personSchema = {
   },
   knowsAbout: [
     'React',
-    '.NET MVC',
-    'JavaScript',
-    'TypeScript',
+    'Next.js',
     'Node.js',
-    'MongoDB',
+    'TypeScript',
+    'AI Systems',
+    'PostgreSQL',
     'Full Stack Development',
-    'Web Development',
-    'Software Engineering'
+    'System Design'
   ],
   sameAs: [
     'https://linkedin.com/in/arnavtiwari',
@@ -76,13 +74,13 @@ export const personSchema = {
 
 export const personalInfo = {
   name: 'Arnav Tiwari',
-  role: 'Software Engineer',
+  role: 'Software Engineering Student',
   location: 'Nagpur, India',
-  university: 'IIIT Nagpur',
-  degree: 'Bachelor of Technology in Computer Science',
+  university: 'Indian Institute of Information Technology Nagpur',
+  degree: 'B.Tech in Computer Science Engineering',
   graduationYear: '2026',
-  email: 'arnav.tiwari@example.com',
-  phone: '+91 98765 43210',
+  email: 'arnavt292@gmail.com',
+  phone: '+91 83298 46328',
   website: 'https://arnavtiwari.dev',
   resumeUrl: '/resume/Arnav_Tiwari_Resume.pdf'
 };
@@ -91,5 +89,5 @@ export const socialLinks = {
   linkedin: 'https://linkedin.com/in/arnavtiwari',
   github: 'https://github.com/arnavtiwari',
   twitter: 'https://twitter.com/arnavtiwari',
-  email: 'mailto:arnav.tiwari@example.com'
+  email: 'mailto:arnavt292@gmail.com'
 };

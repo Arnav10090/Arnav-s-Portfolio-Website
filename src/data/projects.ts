@@ -7,54 +7,90 @@ import type { Project } from '../lib/types';
 
 export const projects: Project[] = [
   {
+    id: 'autopilot-ai-project-planner',
+    title: 'Autopilot – AI Powered Project Planning Platform',
+    description: 'An AI-driven platform that converts high-level ideas into detailed, execution-ready project plans.',
+    problem: 'Project planning is time-consuming and error-prone, often lacking structured risk assessment and realistic execution breakdowns.',
+    solution: 'Designed a full-stack system using a multi-agent AI architecture with Google Gemini and Groq SDK to analyze requirements, recommend tech stacks, assess risks, and generate task-level plans through RESTful orchestration.',
+    outcome: 'Delivered a production-ready system with OAuth authentication, analytics dashboard, multi-format exports, and accessibility support.',
+    techStack: [
+      'Next.js',
+      'TypeScript',
+      'Node.js',
+      'Express.js',
+      'PostgreSQL',
+      'Google Gemini',
+      'Groq SDK',
+      'Tailwind CSS'
+    ],
+    featured: true,
+    imageUrl: '/images/projects/autopilot.webp', // Placeholder, assuming images structure
+    githubUrl: 'https://github.com/arnavtiwari/autopilot', // Placeholder
+    liveUrl: 'https://autopilot-demo.vercel.app' // Placeholder
+  },
+  {
+    id: 'ai-content-generator',
+    title: 'AI-Powered Content Generator Platform',
+    description: 'A scalable SaaS platform for fast, high-quality AI content generation.',
+    problem: 'Manual content creation workflows are slow and difficult to scale.',
+    solution: 'Built an LLM-powered system using Google Gemini API with secure authentication, subscriptions, and optimized prompts.',
+    outcome: 'Enabled 70% faster content generation and supported 10,000+ monthly AI generations.',
+    techStack: [
+      'Next.js',
+      'TypeScript',
+      'PostgreSQL',
+      'Drizzle ORM',
+      'Google Gemini API',
+      'Clerk',
+      'Razorpay',
+      'Tailwind CSS'
+    ],
+    featured: true,
+    imageUrl: '/images/projects/content-gen.webp', // Placeholder
+    githubUrl: 'https://github.com/arnavtiwari/ai-content-gen', // Placeholder
+    liveUrl: 'https://ai-content-gen-demo.vercel.app' // Placeholder
+  },
+  {
+    id: 'book-store-platform',
+    title: 'Book Store – Personalized Book Collection Platform',
+    description: 'A full-stack platform for managing and organizing personal book collections.',
+    problem: 'Lack of simple and secure systems for managing personalized digital book collections.',
+    solution: 'Developed RESTful APIs with JWT-based authentication and a responsive React frontend.',
+    outcome: 'Delivered a modular and secure production-style full-stack application.',
+    techStack: [
+      'React',
+      'Vite',
+      'Node.js',
+      'Express.js',
+      'MongoDB',
+      'JWT',
+      'Tailwind CSS'
+    ],
+    featured: false,
+    imageUrl: '/images/projects/bookstore.webp', // Placeholder
+    githubUrl: 'https://github.com/arnavtiwari/bookstore', // Placeholder
+    liveUrl: 'https://bookstore-demo.vercel.app' // Placeholder
+  },
+  {
     id: 'passvault',
-    title: 'PassVault - Secure Password Manager',
-    description: 'Encrypted password management system with master password authentication and secure clipboard integration.',
-    problem: 'Managing sensitive credentials across multiple platforms insecurely, with users often reusing weak passwords or storing them in plain text files, creating significant security vulnerabilities.',
-    solution: 'Built encrypted password vault with master password authentication, secure clipboard integration, and category-based organization using AES encryption and bcrypt hashing for maximum security.',
-    outcome: 'Learned cryptography fundamentals, secure storage patterns, and state management best practices. Gained deep understanding of security principles and user experience design for sensitive applications.',
-    techStack: ['React', 'Node.js', 'MongoDB', 'bcrypt', 'AES encryption', 'Express.js', 'JWT', 'CSS3'],
-    githubUrl: 'https://github.com/arnavtiwari/passvault',
-    liveUrl: 'https://passvault-demo.vercel.app',
-    imageUrl: '/images/projects/passvault.webp',
-    featured: true
-  },
-  {
-    id: 'task-management-app',
-    title: 'TaskFlow - Collaborative Task Manager',
-    description: 'Real-time collaborative task management application with team workspaces and progress tracking.',
-    problem: 'Teams struggling with task coordination and progress visibility across distributed work environments, leading to missed deadlines and duplicated efforts.',
-    solution: 'Developed real-time collaborative platform with drag-and-drop task boards, team workspaces, deadline tracking, and instant notifications using WebSocket connections.',
-    outcome: 'Successfully managed 100+ concurrent users during testing phase. Improved team productivity by 35% in pilot testing with local startup. Mastered real-time communication patterns and collaborative UX design.',
-    techStack: ['React', 'Node.js', 'Socket.io', 'PostgreSQL', 'Express.js', 'JWT', 'Tailwind CSS', 'Prisma'],
-    githubUrl: 'https://github.com/arnavtiwari/taskflow',
-    liveUrl: 'https://taskflow-demo.vercel.app',
-    imageUrl: '/images/projects/taskflow.webp',
-    featured: true
-  },
-  {
-    id: 'weather-dashboard',
-    title: 'WeatherScope - Advanced Weather Dashboard',
-    description: 'Comprehensive weather dashboard with location-based forecasts, interactive maps, and weather alerts.',
-    problem: 'Existing weather apps provide basic information without comprehensive visualization or customizable alerts for specific weather conditions important to users.',
-    solution: 'Created interactive dashboard with 7-day forecasts, weather maps, customizable alerts, and location-based recommendations using multiple weather APIs and geolocation services.',
-    outcome: 'Achieved 95% forecast accuracy by integrating multiple weather data sources. Served 1000+ users during beta testing. Enhanced skills in API integration, data visualization, and progressive web app development.',
-    techStack: ['React', 'TypeScript', 'Chart.js', 'OpenWeather API', 'Geolocation API', 'Service Workers', 'Tailwind CSS'],
-    githubUrl: 'https://github.com/arnavtiwari/weatherscope',
-    liveUrl: 'https://weatherscope-demo.vercel.app',
-    imageUrl: '/images/projects/weatherscope.webp',
-    featured: false
-  },
-  {
-    id: 'expense-tracker',
-    title: 'ExpenseWise - Smart Expense Tracker',
-    description: 'Intelligent expense tracking application with budget management, category analysis, and spending insights.',
-    problem: 'Individuals lacking visibility into spending patterns and budget adherence, making it difficult to achieve financial goals and identify cost-saving opportunities.',
-    solution: 'Built comprehensive expense tracker with automatic categorization, budget alerts, spending analytics, and visual reports using machine learning for transaction classification.',
-    outcome: 'Helped users reduce unnecessary spending by average of 22% through insights and alerts. Processed 10,000+ transactions during testing. Gained expertise in data analysis, financial algorithms, and user behavior patterns.',
-    techStack: ['React', 'Node.js', 'MongoDB', 'Chart.js', 'Express.js', 'Plaid API', 'Machine Learning', 'Material-UI'],
-    githubUrl: 'https://github.com/arnavtiwari/expensewise',
-    imageUrl: '/images/projects/expensewise.webp',
-    featured: false
+    title: 'PassVault',
+    description: 'A secure, military-grade password manager with zero-knowledge architecture.',
+    problem: 'Managing multiple passwords securely across different platforms is complex and risky.',
+    solution: 'Developed a robust password manager using MERN stack with AES-256 encryption and zero-knowledge architecture to ensure data privacy.',
+    outcome: 'Provided a secure, user-friendly platform for managing passwords with real-time sync and military-grade encryption.',
+    techStack: [
+      'React',
+      'Node.js',
+      'MongoDB',
+      'Express',
+      'Vite',
+      'Tailwind CSS',
+      'Framer Motion',
+      'JWT'
+    ],
+    featured: true,
+    imageUrl: '/images/projects/passvault.webp', // Placeholder
+    githubUrl: 'https://github.com/arnavtiwari/passvault', // Placeholder
+    liveUrl: 'https://passvault-demo.vercel.app' // Placeholder
   }
 ];

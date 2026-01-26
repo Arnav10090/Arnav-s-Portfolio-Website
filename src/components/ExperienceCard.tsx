@@ -40,7 +40,7 @@ export function ExperienceCard({ experience, className }: ExperienceCardProps) {
     return parts.map((part, index) => {
       if (metricRegex.test(part)) {
         return (
-          <span key={index} className="text-blue-600 font-semibold">
+          <span key={index} className="text-primary-600 dark:text-primary-400 font-semibold">
             {part}
           </span>
         );
@@ -55,7 +55,7 @@ export function ExperienceCard({ experience, className }: ExperienceCardProps) {
       className={cn(
         'transition-all duration-300 hover:shadow-xl',
         // Left border accent for high priority (Hitachi experience)
-        priority === 'high' && 'border-l-4 border-l-blue-500',
+        priority === 'high' && 'border-l-4 border-l-primary-500 dark:border-l-primary-400',
         className
       )}
       role="article"
@@ -78,7 +78,7 @@ export function ExperienceCard({ experience, className }: ExperienceCardProps) {
                     href={companyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-sm"
+                    className="text-lg font-semibold text-gray-900 dark:text-gray-100 hover:text-primary-600 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-sm"
                     aria-label={`Visit ${company} website`}
                   >
                     {company}
@@ -89,9 +89,9 @@ export function ExperienceCard({ experience, className }: ExperienceCardProps) {
               </div>
             </div>
             
-            <CardTitle className="text-xl mb-1">{role}</CardTitle>
+            <CardTitle className="text-xl mb-1 dark:text-gray-100">{role}</CardTitle>
             
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-gray-600">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
               <span className="font-medium">{duration}</span>
               <span className="hidden sm:inline" aria-hidden="true">•</span>
               <span>{location}</span>
@@ -108,14 +108,14 @@ export function ExperienceCard({ experience, className }: ExperienceCardProps) {
         {/* Achievements Section */}
         {achievements.length > 0 && (
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-3 uppercase tracking-wide">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide">
               Key Achievements
             </h3>
             <ul className="space-y-3" role="list">
               {achievements.map((achievement, index) => (
                 <li key={index} className="flex items-start gap-3" role="listitem">
-                  <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-gray-700 leading-relaxed">
+                  <div className="w-1.5 h-1.5 bg-primary-500 dark:bg-primary-400 rounded-full mt-2 flex-shrink-0" aria-hidden="true" />
+                  <span className="text-gray-700 dark:text-gray-300 leading-relaxed">
                     {highlightMetrics(achievement)}
                   </span>
                 </li>
@@ -127,7 +127,7 @@ export function ExperienceCard({ experience, className }: ExperienceCardProps) {
         {/* Tech Stack Section */}
         {techStack.length > 0 && (
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-3 uppercase tracking-wide">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wide">
               Technologies Used
             </h3>
             <div className="flex flex-wrap gap-2" role="list" aria-label="Technologies used in this role">
@@ -137,7 +137,7 @@ export function ExperienceCard({ experience, className }: ExperienceCardProps) {
                   variant={isStrategicSkill(tech) ? 'strategic' : 'standard'}
                   className={cn(
                     'text-xs',
-                    isStrategicSkill(tech) && 'bg-purple-100 text-purple-700 border-purple-200'
+                    isStrategicSkill(tech) && 'bg-secondary-100 text-secondary-700 border-secondary-200 dark:bg-secondary-800 dark:text-secondary-200 dark:border-secondary-700'
                   )}
                   role="listitem"
                 >

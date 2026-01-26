@@ -2,24 +2,28 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'elevated' | 'standard';
+  variant?: 'base' | 'elevated' | 'glass';
   children: React.ReactNode;
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant = 'standard', children, ...props }, ref) => {
-    const baseStyles = 'rounded-lg border bg-white transition-all duration-200';
+  ({ className, variant = 'base', children, ...props }, ref) => {
+    const baseStyles = 'block transition-all duration-300 ease-out border overflow-hidden relative group';
     
     const variants = {
-      elevated: 'border-gray-200 shadow-lg hover:shadow-xl hover:transform hover:-translate-y-1',
-      standard: 'border-gray-200 shadow-sm hover:shadow-md hover:border-gray-300'
+      base: 'bg-surface-50 border-white/10 rounded-xl shadow-subtle hover:border-accent-blue/30 transition-colors',
+      elevated: 'bg-surface-100 border-white/10 rounded-lg shadow-medium hover:-translate-y-1 hover:shadow-floating hover:border-accent-blue/30 transition-all', 
+      // Glassmorphism variant with backdrop blur
+      glass: 'bg-surface-glass backdrop-blur-xl border-white/10 rounded-lg shadow-soft supports-[backdrop-filter]:bg-surface-glass supports-[backdrop-filter]:backdrop-blur-xl'
     };
     
+    const variantStyles = variants[variant as keyof typeof variants] || variants.base;
+
     return (
       <div
         className={cn(
           baseStyles,
-          variants[variant],
+          variantStyles,
           className
         )}
         ref={ref}
@@ -48,7 +52,7 @@ const CardTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HT
   ({ className, ...props }, ref) => (
     <h3
       ref={ref}
-      className={cn('text-xl font-semibold leading-none tracking-tight text-gray-900', className)}
+      className={cn('text-xl font-semibold leading-none tracking-tight text-white', className)}
       {...props}
     />
   )
@@ -59,7 +63,7 @@ const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttribu
   ({ className, ...props }, ref) => (
     <p
       ref={ref}
-      className={cn('text-sm text-gray-500', className)}
+      className={cn('text-sm text-white/60', className)}
       {...props}
     />
   )

@@ -67,11 +67,13 @@ export interface Skill {
   /** Skill name */
   name: string;
   /** Skill category for organization */
-  category: 'frontend' | 'backend' | 'database' | 'enterprise' | 'cloud' | 'tools' | 'emerging';
+  category: 'frontend' | 'backend' | 'database' | 'enterprise' | 'cloud' | 'tools' | 'emerging' | 'softSkills';
   /** Proficiency level */
-  proficiency: 'expert' | 'proficient' | 'familiar' | 'learning';
+  proficiency: 'expert' | 'proficient' | 'familiar' | 'learning' | 'advanced' | 'intermediate';
   /** Whether this skill should receive strategic emphasis (.NET MVC, React) */
   strategic: boolean;
+  /** Optional icon component */
+  icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }
 
 /**

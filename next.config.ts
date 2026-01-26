@@ -21,7 +21,7 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react'],
     // Enable more aggressive optimizations
-    optimizeCss: true,
+    optimizeCss: false,
   },
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY,

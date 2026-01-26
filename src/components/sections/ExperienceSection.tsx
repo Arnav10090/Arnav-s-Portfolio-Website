@@ -1,6 +1,8 @@
 import React from 'react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { Card } from '@/components/ui/Card';
 import { ExperienceCard } from '@/components/ExperienceCard';
+import { DecorativeBackground } from '@/components/ui/DecorativeBackground';
 import { experiences } from '@/data/experience';
 import { cn } from '@/lib/utils';
 
@@ -8,80 +10,78 @@ interface ExperienceSectionProps {
   className?: string;
 }
 
-export function ExperienceSection({ className }: ExperienceSectionProps) {
-  // Sort experiences by priority (high first) and then by duration (most recent first)
-  const sortedExperiences = [...experiences].sort((a, b) => {
-    // Priority order: high > medium > low
-    const priorityOrder = { high: 3, medium: 2, low: 1 };
-    const priorityDiff = priorityOrder[b.priority] - priorityOrder[a.priority];
-    
-    if (priorityDiff !== 0) {
-      return priorityDiff;
-    }
-    
-    // If same priority, sort by duration (assuming more recent experiences come first in data)
-    return 0;
-  });
-
+export function ExperienceSection() {
   return (
     <section
       id="experience"
-      className={cn(
-        // Highest visual priority with generous spacing
-        'py-24 md:py-32 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900',
-        className
-      )}
+      className="py-24 bg-white dark:bg-background"
       aria-labelledby="experience-heading"
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeading
-          level={2}
-          subtitle="Professional experience building real-world solutions with measurable impact"
-          className="mb-16 md:mb-20"
-          id="experience-heading"
-        >
-          Professional Experience
-        </SectionHeading>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-16">
+          {/* Left side: Decorative Background (30%) - Visual for this section */}
+          <div className="hidden lg:block lg:w-[30%] relative min-h-[600px]">
+             <DecorativeBackground position="left" className="!static !w-full !h-full" />
+          </div>
 
-        <div className="space-y-8 md:space-y-12">
-          {sortedExperiences.map((experience, index) => (
-            <ExperienceCard
-              key={experience.id}
-              experience={experience}
-              className={cn(
-                // Add extra emphasis for high priority experiences (Hitachi)
-                experience.priority === 'high' && [
-                  'ring-1 ring-blue-100',
-                  'shadow-lg hover:shadow-2xl',
-                  // Slightly larger scale for high priority
-                  'transform hover:scale-[1.02]'
-                ]
-              )}
-            />
-          ))}
-        </div>
+          {/* Right side: Main Content (70%) */}
+          <div className="w-full lg:w-[70%]">
+             <SectionHeading
+               subtitle="Professional journey and key contributions"
+               className="mb-12 sm:mb-16 md:mb-20 text-left"
+               id="experience-heading"
+             >
+               Work Experience
+             </SectionHeading>
 
-        {/* Call-to-action for more details */}
-        <div className="mt-16 md:mt-20 text-center">
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
-            Want to learn more about my experience and technical skills?
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="#contact"
-              className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              aria-label="Navigate to contact section"
-            >
-              Get in Touch
-            </a>
-            <a
-              href="/resume.pdf"
-              download="Arnav_Tiwari_Resume.pdf"
-              className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-700 text-base font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              aria-label="Download resume as PDF"
-            >
-              Download Resume
-            </a>
+             <div className="relative space-y-12">
+               {/* Vertical Line for Timeline - hidden on small screens if needed, or adjust positioning */}
+               <div className="absolute left-[8px] top-4 bottom-4 w-px bg-gray-200 dark:bg-white/10 md:hidden" />
+
+               {experiences.map((job, index) => (
+                 <div 
+                   key={index} 
+                   className="relative flex flex-col gap-4 animate-fade-up opacity-0"
+                   style={{
+                     animationDelay: `${index * 150}ms`,
+                     animationFillMode: 'forwards'
+                   }}
+                 >
+                   {/* Mobile/Tablet Layout: Stacked with timeline on left */}
+                   {/* Desktop Layout (within 60% col): Similar to before but maybe simplified? 
+                       The previous timeline design relied on 4 cols left / 8 cols right.
+                       Inside this 60% column, we don't need a complex grid. We can stack Role/Company above Description or use a smaller grid.
+                   */}
+                   
+                   <div className="pl-6 md:pl-0 relative">
+                     {/* Mobile Dot */}
+                     <div className="absolute left-0 top-2 w-4 h-4 rounded-full border-4 border-white dark:border-[#0a0e1a] bg-primary-600 md:hidden" />
+                     
+                     <div className="flex flex-col md:flex-row md:justify-between md:items-baseline gap-2 mb-4">
+                       <div>
+                         <h3 className="text-xl font-semibold text-text-primary tracking-tight">{job.role}</h3>
+                         <p className="text-primary-600 dark:text-primary-400 font-medium mt-1">{job.company}</p>
+                       </div>
+                       <div className="text-left md:text-right">
+                         <p className="text-sm text-text-secondary font-mono bg-surface p-1 rounded inline-block md:bg-transparent md:p-0">{job.duration}</p>
+                         <p className="text-sm text-text-secondary mt-1">{job.location}</p>
+                       </div>
+                     </div>
+
+                     <Card variant="base" className="p-6 sm:p-8 hover:border-primary-500/30 transition-colors">
+                       <ul className="space-y-3 sm:space-y-4">
+                         {job.achievements.map((achievement, i) => (
+                           <li key={i} className="flex items-start text-text-secondary leading-relaxed text-sm sm:text-base">
+                             <span className="mr-3 mt-2 w-1.5 h-1.5 bg-primary-500/50 rounded-full flex-shrink-0" />
+                             <span>{achievement}</span>
+                           </li>
+                         ))}
+                       </ul>
+                     </Card>
+                   </div>
+                 </div>
+               ))}
+             </div>
           </div>
         </div>
       </div>

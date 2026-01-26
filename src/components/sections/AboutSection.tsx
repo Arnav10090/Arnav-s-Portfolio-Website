@@ -1,91 +1,109 @@
+'use client';
+
 import React from 'react';
-import { SectionHeading } from '@/components/ui/SectionHeading';
-import { personalInfo } from '@/data/metadata';
 import { cn } from '@/lib/utils';
+import { DecorativeBackground } from '@/components/ui/DecorativeBackground';
 
 interface AboutSectionProps {
   className?: string;
+  id?: string;
 }
 
-export function AboutSection({ className }: AboutSectionProps) {
+export function AboutSection({ className, id }: AboutSectionProps) {
   return (
     <section
-      id="about"
+      id={id}
       className={cn(
-        'py-16 md:py-24 bg-white dark:bg-gray-800',
+        'relative py-20 sm:py-28 md:py-32 lg:py-40 bg-white dark:bg-transparent',
         className
       )}
       aria-labelledby="about-heading"
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeading
-          level={2}
-          subtitle="Get to know the person behind the code"
-          className="mb-12 md:mb-16"
-          id="about-heading"
-        >
-          About Me
-        </SectionHeading>
+      <div className="container mx-auto px-4 sm:px-6">
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Professional Photo Placeholder */}
-          <div className="order-2 lg:order-1">
+        {/* Asymmetric layout: stacks on mobile/tablet, 30% left + 70% right on desktop */}
+        <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-16">
+          {/* Left side: Decorative Background (30%) */}
+          <div className="hidden lg:block lg:w-[30%] relative min-h-[600px]">
+             <DecorativeBackground position="left" className="!static !w-full !h-full" />
+          </div>
+
+          {/* Right side: Content (70%) */}
+          <div className="w-full lg:w-[70%] max-w-full lg:max-w-[800px]">
+            <div className="animate-fade-up">
+              <h2 
+                id="about-heading"
+                className="text-4xl sm:text-5xl lg:text-[56px] font-bold mb-4 sm:mb-5 md:mb-6 bg-gradient-to-r from-primary-500 to-purple-500 bg-clip-text text-transparent leading-tight"
+                style={{ 
+                  fontWeight: 700,
+                  lineHeight: 1.1,
+                  opacity: 1
+                }}
+              >
+                About Me
+              </h2>
+              <p 
+                className="text-base sm:text-lg md:text-[20px] mb-8 sm:mb-10 md:mb-12"
+                style={{ 
+                  opacity: 0.6,
+                  color: 'var(--text-secondary)'
+                }}
+              >
+                Get to know the person behind the code
+              </p>
+            </div>
+
+            {/* Glassmorphic content container */}
             <div className="relative">
-              <div className="aspect-square max-w-md mx-auto bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 rounded-2xl flex items-center justify-center shadow-lg" role="img" aria-label="Professional photo placeholder">
-                <div className="text-center text-gray-500 dark:text-gray-400">
-                  <svg
-                    className="w-24 h-24 mx-auto mb-4 text-gray-400 dark:text-gray-600"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
+              {/* Decorative corner elements */}
+              <div className="absolute -top-1.5 -left-1.5 sm:-top-2 sm:-left-2 w-3 h-3 sm:w-4 sm:h-4 bg-primary-500 rounded-sm"></div>
+              <div className="absolute -bottom-1.5 -right-1.5 sm:-bottom-2 sm:-right-2 w-3 h-3 sm:w-4 sm:h-4 bg-purple-500 rounded-sm"></div>
+
+              <div 
+                className="relative bg-[rgba(30,41,59,0.3)] backdrop-blur-sm border border-[rgba(255,255,255,0.08)] rounded-xl md:rounded-2xl p-6 sm:p-8 md:p-10 lg:p-12"
+                style={{ contain: 'layout style paint' }}
+              >
+                <div className="space-y-4 sm:space-y-5 md:space-y-6">
+                  <p 
+                    className="text-base sm:text-[17px] text-text-secondary highlighted-text animate-fade-up"
+                    style={{ 
+                      lineHeight: 1.8,
+                      animationDelay: '100ms',
+                      opacity: 1
+                    }}
                   >
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                  </svg>
-                  <p className="text-sm font-medium">Professional Photo</p>
-                  <p className="text-xs text-gray-400 dark:text-gray-600">Coming Soon</p>
+                    I am a Computer Science undergraduate at <span className="text-primary-500 font-medium highlight-term">IIIT Nagpur</span>, focused on building reliable, real-world software systems. My experience spans <span className="text-primary-500 font-medium highlight-term">full-stack web development</span>, <span className="text-primary-500 font-medium highlight-term">backend engineering</span>, and <span className="text-primary-500 font-medium highlight-term">applied AI</span>.
+                  </p>
+                  
+                  <p 
+                    className="text-base sm:text-[17px] text-text-secondary highlighted-text animate-fade-up"
+                    style={{ 
+                      lineHeight: 1.8,
+                      animationDelay: '200ms',
+                      opacity: 1
+                    }}
+                  >
+                    I specialize in designing scalable web applications using <span className="text-primary-500 font-medium highlight-term">React</span>, <span className="text-primary-500 font-medium highlight-term">Next.js</span>, and <span className="text-primary-500 font-medium highlight-term">Node.js</span>, with a strong emphasis on clean architecture and performance.
+                  </p>
+                  
+                  <p 
+                    className="text-base sm:text-[17px] text-text-secondary highlighted-text animate-fade-up"
+                    style={{ 
+                      lineHeight: 1.8,
+                      animationDelay: '300ms',
+                      opacity: 1
+                    }}
+                  >
+                    As I prepare for <span className="text-primary-500 font-medium highlight-term">placement season 2026</span>, I am seeking opportunities to solve complex engineering problems and contribute to high-impact products.
+                  </p>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Professional Narrative */}
-          <div className="order-1 lg:order-2 space-y-6">
-            <div className="prose prose-lg max-w-none">
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                I'm a passionate software engineer pursuing my Bachelor's in Computer Science at{' '}
-                <a
-                  href="https://iiitn.ac.in"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium underline decoration-primary-200 dark:decoration-primary-800 hover:decoration-primary-300 dark:hover:decoration-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-sm"
-                  aria-label="Visit IIIT Nagpur website"
-                >
-                  IIIT Nagpur
-                </a>
-                , with a graduation target of 2026. Currently, I'm gaining invaluable industry experience as a Software Engineering Intern at{' '}
-                <a
-                  href="https://www.hitachi.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium underline decoration-primary-200 dark:decoration-primary-800 hover:decoration-primary-300 dark:hover:decoration-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded-sm"
-                  aria-label="Visit Hitachi website"
-                >
-                  Hitachi
-                </a>
-                , where I build safety-critical industrial systems that impact real-world operations.
-              </p>
-              
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                My expertise spans modern web technologies including React and .NET MVC, with a focus on creating robust, scalable solutions. I thrive on solving complex problems and building systems that make a measurable difference. Whether it's developing permit management systems handling hundreds of daily requests or architecting dashboard solutions that reduce audit time by 40%, I'm driven by the opportunity to create meaningful impact through code.
-              </p>
-              
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                As I approach placement season 2026, I'm excited to bring my technical skills, problem-solving mindset, and passion for excellence to a dynamic engineering team where I can continue growing while contributing to innovative projects.
-              </p>
-            </div>
-          </div>
         </div>
       </div>
+
+
     </section>
   );
 }

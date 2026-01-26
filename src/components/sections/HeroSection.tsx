@@ -1,11 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { personalInfo } from '@/data/metadata';
 import { trackResumeDownload } from '@/lib/analytics';
+import { throttle } from '@/lib/useScrollAnimation';
 
 export function HeroSection() {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const profileCardRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+
   const scrollToWork = () => {
     const workSection = document.getElementById('experience');
     if (workSection) {
@@ -50,71 +55,234 @@ export function HeroSection() {
     }
   };
 
+  // Profile card tilt effect on mouse move
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!profileCardRef.current) return;
+      
+      const card = profileCardRef.current;
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = ((y - centerY) / centerY) * -2; // max 2deg
+      const rotateY = ((x - centerX) / centerX) * 2; // max 2deg
+      
+      setMousePosition({ x: rotateY, y: rotateX });
+    };
+
+    const handleMouseLeave = () => {
+      setMousePosition({ x: 0, y: 0 });
+    };
+
+    const card = profileCardRef.current;
+    if (card) {
+      card.addEventListener('mousemove', handleMouseMove);
+      card.addEventListener('mouseleave', handleMouseLeave);
+      
+      return () => {
+        card.removeEventListener('mousemove', handleMouseMove);
+        card.removeEventListener('mouseleave', handleMouseLeave);
+      };
+    }
+  }, []);
+
+  // Parallax scroll effect with throttling for performance
+  useEffect(() => {
+    const handleScroll = throttle(() => {
+      if (!heroRef.current) return;
+      
+      const scrolled = window.scrollY;
+      const parallaxSpeed = 0.5;
+      
+      // Use transform for GPU acceleration
+      heroRef.current.style.transform = `translateY(${scrolled * parallaxSpeed}px)`;
+    }, 16); // ~60fps
+
+    // Add will-change on mount
+    if (heroRef.current) {
+      heroRef.current.style.willChange = 'transform';
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      // Remove will-change on unmount
+      if (heroRef.current) {
+        heroRef.current.style.willChange = 'auto';
+      }
+    };
+  }, []);
+
   return (
     <section 
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      id="hero"
+      className="relative min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-28 lg:pt-[120px] pb-8 sm:pb-10 md:pb-10 lg:pb-[40px] bg-gradient-to-b from-blue-50 to-white dark:from-[#0a0e1a] dark:to-[#1a1f2e]"
       aria-label="Hero section"
     >
-      {/* Subtle gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 opacity-60" aria-hidden="true" />
-      <div className="absolute inset-0 bg-gradient-to-t from-white/20 dark:from-gray-900/20 via-transparent to-white/20 dark:to-gray-900/20" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]" aria-hidden="true" />
       
-      {/* Content */}
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="space-y-8 animate-fade-in">
-          {/* Name and Role */}
-          <div className="space-y-4">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">
-              {personalInfo.name}
-            </h1>
-            <p className="text-xl md:text-2xl text-primary-600 dark:text-primary-400 font-medium" role="doc-subtitle">
-              {personalInfo.role}
-            </p>
+      <div ref={heroRef} className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        {/* Split-screen layout: stacks on mobile, 50/50 on desktop (min 1024px) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 items-center">
+          
+          {/* Left Column - Text Content with responsive padding and max-width */}
+          <div 
+            className="order-2 lg:order-1 space-y-6 sm:space-y-7 md:space-y-8 text-center lg:text-left lg:pl-12 xl:pl-20 animate-slide-in-left"
+            style={{
+              maxWidth: '100%'
+            }}
+          >
+            <div className="space-y-4 sm:space-y-5 md:space-y-6">
+              {/* Main name: responsive font sizes */}
+              <h1 
+                className="text-5xl sm:text-6xl md:text-7xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-[1.1]"
+                style={{ 
+                  letterSpacing: '-2px',
+                  fontFeatureSettings: '"tnum", "lnum"'
+                }}
+              >
+                {personalInfo.name}
+              </h1>
+              {/* Subtitle: responsive font sizes */}
+              <p 
+                className="text-lg sm:text-xl md:text-2xl text-gray-700 dark:text-white font-medium"
+                style={{ 
+                  opacity: 0.7,
+                  letterSpacing: '0.5px'
+                }}
+              >
+                {personalInfo.role}
+              </p>
+            </div>
+            
+            {/* Body text: responsive font sizes */}
+            <div className="max-w-full sm:max-w-[520px] mx-auto lg:mx-0">
+              <p 
+                className="text-base sm:text-lg text-gray-600 dark:text-white"
+                style={{ 
+                  lineHeight: '1.7',
+                  opacity: 0.8
+                }}
+              >
+                Software engineering student at <span className="text-gray-900 dark:text-white font-medium" style={{ opacity: 1 }}>IIIT Nagpur</span> building scalable, production-grade applications using <span className="text-gray-900 dark:text-white font-medium" style={{ opacity: 1 }}>Next.js</span> and <span className="text-gray-900 dark:text-white font-medium" style={{ opacity: 1 }}>AI-powered systems</span>.
+              </p>
+            </div>
+            
+            {/* CTA Buttons with hover effects - stack on mobile, row on tablet+ */}
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-2 sm:pt-4">
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={scrollToWork}
+                className="w-full sm:w-auto min-h-[44px] group relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-floating"
+              >
+                View My Work
+              </Button>
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={downloadResume}
+                className="w-full sm:w-auto min-h-[44px] group relative transition-all duration-300 border border-gray-200 dark:border-white/10 hover:border-blue-600 hover:bg-blue-600 text-gray-900 dark:text-white hover:text-white rounded-xl"
+              >
+                <span className="relative z-10 flex items-center justify-center gap-2">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  Download Resume
+                </span>
+              </Button>
+            </div>
+          </div>
+
+          {/* Right Column - Profile Card (vertically centered) - responsive sizing */}
+          <div 
+            className="order-1 lg:order-2 flex justify-center lg:justify-end items-center animate-slide-in-right"
+            style={{
+              animationDelay: '0.2s'
+            }}
+          >
+            <div 
+              ref={profileCardRef}
+              className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-88 md:h-88 lg:w-[28rem] lg:h-[28rem] xl:w-[32rem] xl:h-[32rem] transition-transform duration-300 ease-out"
+              style={{
+                transform: `perspective(1000px) rotateX(${mousePosition.y}deg) rotateY(${mousePosition.x}deg)`,
+                transformStyle: 'preserve-3d',
+                willChange: 'transform'
+              }}
+            >
+               {/* Glassmorphism Card with backdrop-blur-xl and rgba(30, 41, 59, 0.5) */}
+               <div 
+                 className="absolute inset-0 backdrop-blur-xl rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10"
+                 style={{
+                   background: 'rgba(30, 41, 59, 0.5)',
+                   boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2)',
+                   contain: 'layout style paint'
+                 }}
+               >
+                 <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center">
+                    {/* Placeholder Icon */}
+                    <svg
+                      className="w-1/3 h-1/3 text-gray-400 dark:text-gray-400"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                 </div>
+               </div>
+
+               {/* Status Badge with pulsing green dot - responsive sizing */}
+               <div 
+                 className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5 md:bottom-6 md:left-6 backdrop-blur-md p-3 sm:p-4 rounded-lg sm:rounded-xl shadow-lg flex items-center gap-2 sm:gap-3 border border-gray-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/80"
+                 style={{
+                   contain: 'layout style paint'
+                 }}
+               >
+                  <div 
+                    className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full relative"
+                    style={{
+                      background: '#10b981',
+                      animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                    }}
+                  >
+                    <div 
+                      className="absolute inset-0 rounded-full"
+                      style={{
+                        background: '#10b981',
+                        filter: 'blur(4px)',
+                        animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider">Status</p>
+                    <p className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white">Open to Work</p>
+                  </div>
+               </div>
+            </div>
           </div>
           
-          {/* Value Proposition */}
-          <div className="max-w-3xl mx-auto space-y-6">
-            <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
-              Software Engineering student at <span className="font-semibold text-primary-600 dark:text-primary-400">IIIT Nagpur</span> with 
-              expertise in <span className="font-semibold text-secondary-600 dark:text-secondary-400">React</span> and <span className="font-semibold text-secondary-600 dark:text-secondary-400">.NET MVC</span>. 
-              Currently building safety-critical industrial systems at <span className="font-semibold text-primary-600 dark:text-primary-400">Hitachi</span>.
-            </p>
-            <p className="text-base md:text-lg text-gray-600 dark:text-gray-400">
-              Passionate about creating robust, scalable solutions that make a real-world impact. 
-              Ready to contribute to your team's success in placement season 2026.
-            </p>
-          </div>
-          
-          {/* Call-to-Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={scrollToWork}
-              className="w-full sm:w-auto min-w-[200px]"
-              aria-label="Scroll to view my work and experience"
-            >
-              View My Work
-            </Button>
-            <Button
-              variant="secondary"
-              size="lg"
-              onClick={downloadResume}
-              className="w-full sm:w-auto min-w-[200px]"
-              aria-label="Download resume as PDF"
-            >
-              Download Resume
-            </Button>
-          </div>
         </div>
       </div>
       
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce" aria-hidden="true">
-        <div className="flex flex-col items-center space-y-2 text-gray-400 dark:text-gray-600">
-          <span className="text-sm font-medium">Scroll to explore</span>
+      {/* Animated Scroll Indicator with bounce animation - hide on mobile */}
+      <div 
+        className="hidden sm:flex absolute bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2" 
+        aria-hidden="true"
+        style={{
+          animation: 'bounceSubtle 2s ease-in-out infinite'
+        }}
+      >
+        <div className="flex flex-col items-center space-y-2 text-gray-500 dark:text-gray-400">
+          <span className="text-xs sm:text-sm font-medium">Scroll to explore</span>
           <svg
-            className="w-6 h-6"
+            className="w-5 h-5 sm:w-6 sm:h-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

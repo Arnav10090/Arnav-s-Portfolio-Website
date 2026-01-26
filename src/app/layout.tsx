@@ -109,7 +109,7 @@ export default function RootLayout({
           strategy="beforeInteractive"
         />
       </head>
-      <body className="font-sans antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-background text-gray-300 selection:bg-primary-500/30 selection:text-primary-200`}>
         {children}
         <Analytics />
         <SpeedInsights />

@@ -6,10 +6,10 @@
 import type { NavigationItem } from '../lib/types';
 
 export const contactInfo = {
-  email: 'arnav.tiwari@example.com',
-  phone: '+91 98765 43210',
+  email: 'arnavt292@gmail.com',
+  phone: '+91 83298 46328',
   location: 'Nagpur, India',
-  availability: 'Available for full-time opportunities starting July 2026'
+  availability: 'Available for full-time software engineering roles starting July 2026.'
 };
 
 export const socialLinks: NavigationItem[] = [
@@ -27,7 +27,7 @@ export const socialLinks: NavigationItem[] = [
   },
   {
     label: 'Email',
-    href: 'mailto:arnav.tiwari@example.com',
+    href: 'mailto:arnavt292@gmail.com',
     external: true,
     icon: 'email'
   },
@@ -45,6 +45,10 @@ export const navigationItems: NavigationItem[] = [
     href: '#about'
   },
   {
+    label: 'Skills',
+    href: '#skills'
+  },
+  {
     label: 'Experience',
     href: '#experience'
   },
@@ -53,8 +57,8 @@ export const navigationItems: NavigationItem[] = [
     href: '#projects'
   },
   {
-    label: 'Skills',
-    href: '#skills'
+    label: 'Resume',
+    href: '#resume'
   },
   {
     label: 'Contact',
