@@ -54,14 +54,18 @@ export const ProjectsSection: React.FC<{ id?: string }> = ({ id }) => {
         <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-16">
           {/* Main Content (85%) */}
           <div className="w-full lg:w-[85%]">
-            <div className="text-left mb-12 sm:mb-16 md:mb-20">
-              <SectionHeading
-                subtitle="Problem-solving through code: Real projects with measurable impact"
-                className="text-left"
+            <div className="text-center">
+              <h2
                 id="projects-heading"
+                className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 dark:from-blue-300 dark:via-blue-400 dark:to-blue-500 bg-clip-text text-transparent leading-none"
               >
                 Personal Projects
-              </SectionHeading>
+              </h2>
+              <p
+                className="text-base md:text-lg text-gray-600 dark:text-gray-400 mb-8 sm:mb-10 md:mb-12 max-w-2xl mx-auto -mt-0"
+              >
+                Problem-solving through code: Real projects with measurable impact
+              </p>
             </div>
 
             {/* Grid layout for all projects - 2 columns on desktop */}

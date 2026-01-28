@@ -68,16 +68,19 @@ export function ResumeSection({ id }: { id?: string }) {
           <div className="w-full lg:w-[70%] flex flex-col items-center lg:items-start justify-center">
             {/* Center content within this column for better visual balance if needed, or keep top aligned */}
             <div className="max-w-xl w-full">
-              <div className="flex flex-col items-center lg:items-start">
-
+              <div className="flex flex-col items-center lg:items-center">
                 {/* Section heading */}
-                <SectionHeading
-                  subtitle="Download my complete professional resume"
-                  id="resume-heading"
-                  className="!text-3xl sm:!text-4xl md:!text-5xl !font-bold text-center lg:text-left mb-8"
+                <h2
+                  id="contact-heading"
+                  className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 dark:from-blue-300 dark:via-blue-400 dark:to-blue-500 bg-clip-text text-transparent leading-tight text-center"
                 >
                   Resume
-                </SectionHeading>
+                </h2>
+                <p
+                  className="text-base md:text-lg text-gray-600 dark:text-gray-400 mb-8 sm:mb-10 md:mb-12 max-w-2xl mx-auto text-center"
+                >
+                  Download my complete professional resume
+                </p>
 
                 {/* Resume card */}
                 <div className="w-full" data-animate="fade-up">

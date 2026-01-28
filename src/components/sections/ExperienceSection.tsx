@@ -26,13 +26,19 @@ export function ExperienceSection() {
 
           {/* Right side: Main Content (70%) */}
           <div className="w-full lg:w-[70%]">
-            <SectionHeading
-              subtitle="Professional journey and key contributions"
-              className="mb-12 sm:mb-16 md:mb-20 text-left"
-              id="experience-heading"
-            >
-              Work Experience
-            </SectionHeading>
+            <div className="text-center">
+              <h2
+                id="experience-heading"
+                className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 dark:from-blue-300 dark:via-blue-400 dark:to-blue-500 bg-clip-text text-transparent leading-none"
+              >
+                Work Experience
+              </h2>
+              <p
+                className="text-base md:text-lg text-gray-600 dark:text-gray-400 mb-0 sm:mb-10 md:mb-12 max-w-2xl mx-auto -mt-0"
+              >
+                Professional journey and key contributions
+              </p>
+            </div>
 
             <div className="relative space-y-12">
               {/* Vertical Line for Timeline - hidden on small screens if needed, or adjust positioning */}

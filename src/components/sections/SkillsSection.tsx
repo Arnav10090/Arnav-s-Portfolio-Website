@@ -17,13 +17,17 @@ export function SkillsSection({ id }: { id?: string }) {
         <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-16">
           {/* Main Content (85%) */}
           <div className="w-full lg:w-[85%]">
-            <SectionHeading
-              subtitle="Technical expertise across the full development stack"
-              className="mb-10 sm:mb-12 md:mb-16 text-left"
-              id="skills-heading"
+            <h2
+              id="contact-heading"
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 dark:from-blue-300 dark:via-blue-400 dark:to-blue-500 bg-clip-text text-transparent leading-tight text-center"
             >
               Technical Skills
-            </SectionHeading>
+            </h2>
+            <p
+              className="text-base md:text-lg text-gray-600 dark:text-gray-400 mb-8 sm:mb-10 md:mb-12 max-w-2xl mx-auto text-center"
+            >
+              Technical expertise across the full development stack
+            </p>
 
             {/* 3-row x 2-column grid layout */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-7 md:gap-8 animate-fade-up">
@@ -43,7 +47,7 @@ export function SkillsSection({ id }: { id?: string }) {
                         'C++': '#00599C',
                         'C': '#A8B9CC',
                       };
-                      
+
                       return (
                         <div
                           key={skill.name}
@@ -83,7 +87,7 @@ export function SkillsSection({ id }: { id?: string }) {
                         'CSS3': '#1572B6',
                         'Figma': '#F24E1E',
                       };
-                      
+
                       return (
                         <div
                           key={skill.name}
@@ -122,7 +126,7 @@ export function SkillsSection({ id }: { id?: string }) {
                         'RESTful API Design': '#FF6C37',
                         'Authentication & Authorization': '#8B5CF6',
                       };
-                      
+
                       return (
                         <div
                           key={skill.name}
@@ -160,7 +164,7 @@ export function SkillsSection({ id }: { id?: string }) {
                         'MongoDB': '#47A248',
                         'ORM / ODM': '#10B981',
                       };
-                      
+
                       return (
                         <div
                           key={skill.name}
@@ -200,7 +204,7 @@ export function SkillsSection({ id }: { id?: string }) {
                         'CI/CD Pipelines': '#FF6C37',
                         'Postman': '#FF6C37',
                       };
-                      
+
                       return (
                         <div
                           key={skill.name}
@@ -239,7 +243,7 @@ export function SkillsSection({ id }: { id?: string }) {
                         'Problem Solving': '#8B5CF6',
                         'Team Collaboration': '#10B981',
                       };
-                      
+
                       return (
                         <div
                           key={skill.name}

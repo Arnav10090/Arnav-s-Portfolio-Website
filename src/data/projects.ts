@@ -30,7 +30,7 @@ export const projects: Project[] = [
   },
   {
     id: 'ai-content-generator',
-    title: 'AI-Powered Content Generator Platform',
+    title: 'AI-Powered Content Generation Platform',
     description: 'A scalable SaaS platform for fast, high-quality AI content generation.',
     problem: 'Manual content creation workflows are slow and difficult to scale.',
     solution: 'Built an LLM-powered system using Google Gemini API with secure authentication, subscriptions, and optimized prompts.',
@@ -52,7 +52,7 @@ export const projects: Project[] = [
   },
   {
     id: 'book-store-platform',
-    title: 'Book Store – Personalized Book Collection Platform',
+    title: 'BookStore – Personalized Book Collection Platform',
     description: 'A full-stack platform for managing and organizing personal book collections.',
     problem: 'Lack of simple and secure systems for managing personalized digital book collections.',
     solution: 'Developed RESTful APIs with JWT-based authentication and a responsive React frontend.',
@@ -73,7 +73,7 @@ export const projects: Project[] = [
   },
   {
     id: 'passvault',
-    title: 'PassVault',
+    title: 'PassVault - Secure Passward Storage Platform',
     description: 'A secure, military-grade password manager with zero-knowledge architecture.',
     problem: 'Managing multiple passwords securely across different platforms is complex and risky.',
     solution: 'Developed a robust password manager using MERN stack with AES-256 encryption and zero-knowledge architecture to ensure data privacy.',

@@ -33,20 +33,12 @@ export function AboutSection({ className, id }: AboutSectionProps) {
             <div className="lg:animate-fade-up">
               <h2
                 id="about-heading"
-                className="text-4xl sm:text-5xl lg:text-[56px] font-bold mb-4 sm:mb-5 md:mb-6 bg-gradient-to-r from-primary-500 to-purple-500 bg-clip-text text-transparent leading-tight"
-                style={{
-                  fontWeight: 700,
-                  lineHeight: 1.1,
-                  opacity: 1
-                }}
+                className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 dark:from-blue-300 dark:via-blue-400 dark:to-blue-500 bg-clip-text text-transparent leading-tight"
               >
                 About Me
               </h2>
               <p
-                className="text-base sm:text-lg md:text-[20px] mb-8 sm:mb-10 md:mb-12 text-black dark:text-white"
-                style={{
-                  opacity: 0.6,
-                }}
+                className="text-base md:text-lg text-gray-600 dark:text-gray-400 mb-8 sm:mb-10 md:mb-12"
               >
                 Get to know the person behind the code
               </p>
@@ -71,7 +63,7 @@ export function AboutSection({ className, id }: AboutSectionProps) {
                       opacity: 1
                     }}
                   >
-                    I'm a Final-year Computer Science undergraduate at <span className="text-primary-500 font-medium highlight-term">IIIT Nagpur</span> who enjoys turning ambiguous requirements into reliable, production-ready systems.
+                    I'm a <span className="text-primary-500 font-medium highlight-term">Final-year Computer Science</span> undergraduate at <span className="text-primary-500 font-medium highlight-term">IIIT Nagpur</span> who enjoys turning ambiguous requirements into reliable, production-ready systems.
                   </p>
 
                   <p
