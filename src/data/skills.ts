@@ -11,45 +11,55 @@ import {
   SiPostgresql, SiMongodb, SiMysql,
   SiDocker, SiKubernetes,
   SiGit, SiGithubactions, SiPostman,
-  SiHtml5, SiCss3, SiJavascript, SiSass, SiBootstrap, SiFigma
+  SiHtml5, SiCss3, SiJavascript, SiFigma,
+  SiPython, SiCplusplus, SiC
 } from 'react-icons/si';
-import { FaJava, FaPuzzlePiece, FaUsers, FaBrain, FaCode } from 'react-icons/fa';
+import { FaJava, FaPuzzlePiece, FaUsers, FaBrain, FaCode, FaLock, FaDatabase, FaRobot, FaLightbulb } from 'react-icons/fa';
 
 export const skillCategories: Record<string, Skill[]> = {
+  languages: [
+    { name: 'JavaScript', category: 'languages', proficiency: 'expert', strategic: true, icon: SiJavascript },
+    { name: 'TypeScript', category: 'languages', proficiency: 'expert', strategic: true, icon: SiTypescript },
+    { name: 'Python', category: 'languages', proficiency: 'advanced', strategic: false, icon: SiPython },
+    { name: 'Java', category: 'languages', proficiency: 'intermediate', strategic: false, icon: FaJava },
+    { name: 'C++', category: 'languages', proficiency: 'intermediate', strategic: false, icon: SiCplusplus },
+    { name: 'C', category: 'languages', proficiency: 'intermediate', strategic: false, icon: SiC }
+  ],
   frontend: [
     { name: 'React', category: 'frontend', proficiency: 'expert', strategic: true, icon: SiReact },
     { name: 'Next.js', category: 'frontend', proficiency: 'expert', strategic: true, icon: SiNextdotjs },
-    { name: 'TypeScript', category: 'frontend', proficiency: 'expert', strategic: true, icon: SiTypescript },
     { name: 'Tailwind CSS', category: 'frontend', proficiency: 'advanced', strategic: false, icon: SiTailwindcss },
     { name: 'HTML5', category: 'frontend', proficiency: 'expert', strategic: false, icon: SiHtml5 },
     { name: 'CSS3', category: 'frontend', proficiency: 'expert', strategic: false, icon: SiCss3 },
-    { name: 'JavaScript', category: 'frontend', proficiency: 'expert', strategic: false, icon: SiJavascript },
     { name: 'Figma', category: 'frontend', proficiency: 'advanced', strategic: false, icon: SiFigma }
   ],
   backend: [
     { name: 'Node.js', category: 'backend', proficiency: 'expert', strategic: true, icon: SiNodedotjs },
     { name: 'Express.js', category: 'backend', proficiency: 'advanced', strategic: false, icon: SiExpress },
     { name: 'Django', category: 'backend', proficiency: 'intermediate', strategic: false, icon: SiDjango },
-    { name: 'Java', category: 'backend', proficiency: 'intermediate', strategic: false, icon: FaJava }
+    { name: 'RESTful API Design', category: 'backend', proficiency: 'expert', strategic: false, icon: FaCode },
+    { name: 'Authentication & Authorization', category: 'backend', proficiency: 'advanced', strategic: false, icon: FaLock }
   ],
   database: [
     { name: 'PostgreSQL', category: 'database', proficiency: 'expert', strategic: true, icon: SiPostgresql },
+    { name: 'MySQL', category: 'database', proficiency: 'advanced', strategic: false, icon: SiMysql },
     { name: 'MongoDB', category: 'database', proficiency: 'advanced', strategic: false, icon: SiMongodb },
-    { name: 'MySQL', category: 'database', proficiency: 'advanced', strategic: false, icon: SiMysql }
+    { name: 'ORM / ODM', category: 'database', proficiency: 'advanced', strategic: false, icon: FaDatabase }
   ],
-  enterprise: [
-    { name: 'Docker', category: 'enterprise', proficiency: 'advanced', strategic: true, icon: SiDocker },
-    { name: 'Kubernetes', category: 'enterprise', proficiency: 'intermediate', strategic: false, icon: SiKubernetes }
+  devops: [
+    { name: 'Docker', category: 'devops', proficiency: 'advanced', strategic: true, icon: SiDocker },
+    { name: 'Kubernetes', category: 'devops', proficiency: 'intermediate', strategic: false, icon: SiKubernetes },
+    { name: 'Git', category: 'devops', proficiency: 'expert', strategic: true, icon: SiGit },
+    { name: 'GitHub Actions', category: 'devops', proficiency: 'advanced', strategic: false, icon: SiGithubactions },
+    { name: 'CI/CD Pipelines', category: 'devops', proficiency: 'advanced', strategic: false, icon: FaCode },
+    { name: 'Postman', category: 'devops', proficiency: 'advanced', strategic: false, icon: SiPostman }
   ],
-  tools: [
-    { name: 'Git', category: 'tools', proficiency: 'expert', strategic: true, icon: SiGit },
-    { name: 'GitHub Actions', category: 'tools', proficiency: 'advanced', strategic: false, icon: SiGithubactions },
-    { name: 'Postman', category: 'tools', proficiency: 'advanced', strategic: false, icon: SiPostman }
-  ],
-  softSkills: [
-    { name: 'Problem Solving', category: 'softSkills', proficiency: 'expert', strategic: true, icon: FaPuzzlePiece },
-    { name: 'Team Collaboration', category: 'softSkills', proficiency: 'expert', strategic: true, icon: FaUsers },
-    { name: 'AI / LLM Integration', category: 'softSkills', proficiency: 'advanced', strategic: true, icon: FaBrain }
+  aiPractices: [
+    { name: 'AI / LLM Integration', category: 'aiPractices', proficiency: 'advanced', strategic: true, icon: FaBrain },
+    { name: 'Prompt Engineering', category: 'aiPractices', proficiency: 'advanced', strategic: false, icon: FaRobot },
+    { name: 'System Thinking', category: 'aiPractices', proficiency: 'expert', strategic: false, icon: FaLightbulb },
+    { name: 'Problem Solving', category: 'aiPractices', proficiency: 'expert', strategic: true, icon: FaPuzzlePiece },
+    { name: 'Team Collaboration', category: 'aiPractices', proficiency: 'expert', strategic: true, icon: FaUsers }
   ]
 };
 

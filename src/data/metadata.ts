@@ -7,7 +7,7 @@ import type { SEOMetadata } from '../lib/types';
 
 export const siteMetadata: SEOMetadata = {
   title: 'Arnav Tiwari – Software Engineer | Full Stack, AI Systems',
-  description: 'Software engineering student skilled in full-stack development, AI-powered applications, and scalable systems. Experienced with React, Next.js, Node.js, and cloud-native tools.',
+  description: 'Computer Science Engineering Student skilled in full-stack development, AI-powered applications, and scalable systems. Experienced with React, Next.js, Node.js, and cloud-native tools.',
   keywords: [
     'Arnav Tiwari',
     'Software Engineer',
@@ -74,7 +74,7 @@ export const personSchema = {
 
 export const personalInfo = {
   name: 'Arnav Tiwari',
-  role: 'Software Engineering Student',
+  role: 'Computer Science Engineering Student',
   location: 'Nagpur, India',
   university: 'Indian Institute of Information Technology Nagpur',
   degree: 'B.Tech in Computer Science Engineering',

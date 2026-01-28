@@ -11,14 +11,14 @@ export const experiences: Experience[] = [
     company: 'Hitachi India Pvt Ltd',
     companyUrl: 'https://www.hitachi.com',
     role: 'Software Developer Intern',
-    duration: '2024 – 2025',
+    duration: 'July 2025 - Present',
     location: 'Nagpur, India',
     description: 'Worked on industrial-grade software systems for power and manufacturing domains.',
     achievements: [
-      'Developed and optimized Single Line Diagram (SLD) modules improving system analysis efficiency.',
-      'Evaluated real-time system integration using IntervalZero RTX64 RTOS.',
-      'Contributed to large-scale industrial platforms including DPS, RCTMS, PTMS, TTMS, and ICQIS.',
-      'Designed modular components ensuring scalability and maintainability.'
+      'Developed an optimized web applicatio for visualizing Single Line Diagrams (SLD) to improve system analysis efficiency.',
+      'Evaluated real-time system integration using IntervalZero RTX64 RTOS for running Hitachi softwares',
+      'Developed web based software solutions for Steel procesing industries including Digital Permit System, Roll Coolant Tank Monitoring System, Pickling Tank Monitoring System, Truck Turnaround Monitoring System, and Intelligent Coating Quality Improvement System.',
+      'Collaborated with senior engineers to analyze requirements and implement production-grade software solutions'
     ],
     techStack: [
       'C++',
@@ -34,14 +34,14 @@ export const experiences: Experience[] = [
     company: 'Payatu Security Consulting Pvt. Ltd.',
     companyUrl: 'https://payatu.com', // Placeholder
     role: 'Full Stack Developer Intern',
-    duration: '2024',
+    duration: 'May 2025 - July 2025',
     location: 'Pune, India',
     description: 'Built and optimized full-stack applications for security analytics platforms.',
     achievements: [
-      'Reduced frontend load time by 25% using optimized Next.js components.',
-      'Improved backend response time by 40% through REST API optimization.',
-      'Implemented 10+ interactive data visualizations.',
-      'Maintained 90% test coverage in production code.'
+      'Built responsive Next.js + SCSS interfaces, reducing page load time by 25% and improving UI maintainability',
+      'Developed and optimized MySQL-backed REST APIs, improving backend response time by 40%.',
+      'Implemented 10+ interactive data visualizations to support real-time security analytics and reporting.',
+      'Contributed to production-level code with 90% test coverage, following agile development practices.'
     ],
     techStack: [
       'Next.js',

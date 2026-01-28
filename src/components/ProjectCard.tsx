@@ -37,22 +37,22 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, isFeatured = 
   // Magnetic cursor effect
   const handleMouseMove = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current || window.innerWidth < 1024) return;
-    
+
     const card = cardRef.current;
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    
+
     // Calculate distance from center
     const deltaX = (x - centerX) / centerX;
     const deltaY = (y - centerY) / centerY;
-    
+
     // Apply subtle magnetic effect (max 8px movement)
     const moveX = deltaX * 8;
     const moveY = deltaY * 8;
-    
+
     card.style.transform = `translate(${moveX}px, ${moveY}px) translateY(-8px)`;
   }, []);
 
@@ -70,15 +70,15 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, isFeatured = 
           rafRef.current = requestAnimationFrame(() => {
             // Add will-change before animation
             (entry.target as HTMLElement).style.willChange = 'transform, opacity';
-            
+
             setIsVisible(true);
-            
+
             // Remove will-change after animation completes
             setTimeout(() => {
               (entry.target as HTMLElement).style.willChange = 'auto';
             }, techStack.length * 50 + 300);
           });
-          
+
           observer.unobserve(entry.target);
         }
       },
@@ -112,6 +112,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, isFeatured = 
     window.open(liveUrl, '_blank', 'noopener,noreferrer');
   };
 
+  const [isExpanded, setIsExpanded] = React.useState(false);
+
   return (
     <div
       ref={cardRef}
@@ -136,8 +138,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, isFeatured = 
       {imageUrl && (
         <div className={cn(
           "relative overflow-hidden border-b border-gray-100 dark:border-white/10",
-          isFeatured 
-            ? "w-full h-64 lg:w-1/2 lg:h-full lg:border-b-0 lg:border-r" 
+          isFeatured
+            ? "w-full h-64 lg:w-1/2 lg:h-full lg:border-b-0 lg:border-r"
             : "w-full h-56"
         )}>
           <Image
@@ -169,85 +171,118 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, isFeatured = 
           </p>
         </CardHeader>
 
-        <CardContent className="flex-1 space-y-6">
-          {/* Structured Info Blocks with color-coded labels */}
-          <div className="space-y-4">
-            <div className="space-y-1">
-              <h4 className="text-sm font-medium uppercase tracking-wider flex items-center gap-2">
-                <span className="inline-block w-2 h-2 rounded-full bg-red-500" aria-hidden="true" />
-                <span className="text-red-600 dark:text-red-400">Problem</span>
-              </h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{problem}</p>
+        {/* Expandable Content Wrapper */}
+        <div className={cn(
+          "transition-all duration-500 ease-in-out overflow-hidden",
+          // Mobile: Expandable
+          "max-h-0 opacity-0 lg:max-h-none lg:opacity-100",
+          // Mobile Expanded state
+          isExpanded && "max-h-[1000px] opacity-100"
+        )}>
+          <CardContent className="flex-1 space-y-6">
+            {/* Structured Info Blocks with color-coded labels */}
+            <div className="space-y-4">
+              <div className="space-y-1">
+                <h4 className="text-sm font-medium uppercase tracking-wider flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 rounded-full bg-red-500" aria-hidden="true" />
+                  <span className="text-red-600 dark:text-red-400">Problem</span>
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{problem}</p>
+              </div>
+              <div className="space-y-1">
+                <h4 className="text-sm font-medium uppercase tracking-wider flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 rounded-full bg-blue-500" aria-hidden="true" />
+                  <span className="text-blue-600 dark:text-blue-400">Solution</span>
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{solution}</p>
+              </div>
+              <div className="space-y-1">
+                <h4 className="text-sm font-medium uppercase tracking-wider flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 rounded-full bg-green-500" aria-hidden="true" />
+                  <span className="text-green-600 dark:text-green-400">Outcome</span>
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{outcome}</p>
+              </div>
             </div>
-            <div className="space-y-1">
-              <h4 className="text-sm font-medium uppercase tracking-wider flex items-center gap-2">
-                <span className="inline-block w-2 h-2 rounded-full bg-blue-500" aria-hidden="true" />
-                <span className="text-blue-600 dark:text-blue-400">Solution</span>
-              </h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{solution}</p>
-            </div>
-            <div className="space-y-1">
-              <h4 className="text-sm font-medium uppercase tracking-wider flex items-center gap-2">
-                <span className="inline-block w-2 h-2 rounded-full bg-green-500" aria-hidden="true" />
-                <span className="text-green-600 dark:text-green-400">Outcome</span>
-              </h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{outcome}</p>
-            </div>
-          </div>
 
-          {/* Tech Stack with sequential pop-in animation */}
-          <div className="pt-2">
-            <div className="flex flex-wrap gap-2" role="list">
-              {techStack.map((tech, index) => (
-                <span
-                  key={tech}
-                  className={cn(
-                    "inline-flex items-center px-2 py-1 text-xs font-medium rounded-sm",
-                    "bg-blue-50 dark:bg-[rgba(59,130,246,0.15)] text-blue-700 dark:text-blue-400",
-                    // Tech tag scale 1.05 with background deepening on hover
-                    "transition-all duration-300 hover:bg-blue-100 dark:hover:bg-[rgba(59,130,246,0.3)] hover:scale-105 cursor-default",
-                    // Sequential pop-in animation
-                    isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
-                  )}
-                  style={{
-                    transitionDelay: isVisible ? `${index * 50}ms` : '0ms'
-                  }}
-                  role="listitem"
+            {/* Tech Stack with sequential pop-in animation */}
+            <div className="pt-2">
+              <div className="flex flex-wrap gap-2" role="list">
+                {techStack.map((tech, index) => (
+                  <span
+                    key={tech}
+                    className={cn(
+                      "inline-flex items-center px-2 py-1 text-xs font-medium rounded-sm",
+                      "bg-blue-50 dark:bg-[rgba(59,130,246,0.15)] text-blue-700 dark:text-blue-400",
+                      // Tech tag scale 1.05 with background deepening on hover
+                      "transition-all duration-300 hover:bg-blue-100 dark:hover:bg-[rgba(59,130,246,0.3)] hover:scale-105 cursor-default",
+                      // Sequential pop-in animation
+                      isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+                    )}
+                    style={{
+                      transitionDelay: isVisible ? `${index * 50}ms` : '0ms'
+                    }}
+                    role="listitem"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+
+          <CardFooter className="pt-4 border-t border-gray-100 dark:border-white/5 mt-auto pb-6 px-6">
+            {/* CTA buttons with 12px gap matching hero section */}
+            <div className="flex gap-3 w-full">
+              {liveUrl && (
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="flex-1"
+                  onClick={handleLiveClick}
+                  aria-label={`View ${title} project`}
                 >
-                  {tech}
-                </span>
-              ))}
+                  View Project
+                </Button>
+              )}
+              {githubUrl && (
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  className={liveUrl ? "flex-1" : "w-full"}
+                  onClick={handleGitHubClick}
+                  aria-label={`View ${title} source code on GitHub`}
+                >
+                  Source Code
+                </Button>
+              )}
             </div>
-          </div>
-        </CardContent>
+          </CardFooter>
+        </div>
 
-        <CardFooter className="pt-4 border-t border-gray-100 dark:border-white/5 mt-auto">
-          {/* CTA buttons with 12px gap matching hero section */}
-          <div className="flex gap-3 w-full">
-            {liveUrl && (
-              <Button
-                variant="primary"
-                size="lg"
-                className="flex-1"
-                onClick={handleLiveClick}
-                aria-label={`View ${title} live demo`}
-              >
-                Live Demo
-              </Button>
+        {/* Mobile Toggle Button */}
+        <div className="lg:hidden px-6 pb-4 pt-2 mt-auto">
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="w-full flex items-center justify-center gap-2 text-sm font-medium text-primary-600 dark:text-primary-400 py-2 hover:bg-primary-50 dark:hover:bg-primary-900/10 rounded-lg transition-colors"
+          >
+            {isExpanded ? (
+              <>
+                Show Less
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                </svg>
+              </>
+            ) : (
+              <>
+                Show Details
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </>
             )}
-            {githubUrl && (
-              <Button
-                variant="secondary"
-                size="lg"
-                className={liveUrl ? "flex-1" : "w-full"}
-                onClick={handleGitHubClick}
-                aria-label={`View ${title} source code on GitHub`}
-              >
-                Source Code
-              </Button>
-            )}
-          </div>
-        </CardFooter>
+          </button>
+        </div>
       </div>
     </div>
   );

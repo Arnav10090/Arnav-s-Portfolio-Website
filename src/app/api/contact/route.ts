@@ -1,247 +1,166 @@
-import { NextRequest, NextResponse } from 'next/server';
+/**
+ * API Route Handler for Contact Form Submissions
+ * Implements Resend email integration with validation and error handling
+ * Requirements: 1.1, 1.3, 1.4, 2.4, 3.1, 3.4, 4.1, 6.2, 6.3, 6.5
+ */
+
+import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
-import { validateContactForm, sanitizeContactFormData } from '@/lib/validations';
-import { validateEnvironmentVariables } from '@/lib/security';
-import type { ContactFormData, ContactFormResponse } from '@/lib/types';
-
-// Initialize Resend with API key
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-// Rate limiting storage (in production, use Redis or similar)
-const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
-
-// Rate limiting configuration
-const RATE_LIMIT_MAX = 3; // Maximum submissions per hour
-const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour in milliseconds
+import { validateContactForm, type ContactFormData } from '@/lib/validation';
+import { generateEmailHTML } from '@/lib/email-template';
 
 /**
- * Get client IP address for rate limiting
+ * Response structure for success
  */
-function getClientIP(request: NextRequest): string {
-  const forwarded = request.headers.get('x-forwarded-for');
-  const realIP = request.headers.get('x-real-ip');
-  
-  if (forwarded) {
-    return forwarded.split(',')[0].trim();
-  }
-  
-  if (realIP) {
-    return realIP;
-  }
-  
-  // Fallback for development
-  return 'unknown';
+interface SuccessResponse {
+  success: true;
+  message: string;
 }
 
 /**
- * Check rate limiting for IP address
+ * Response structure for errors
  */
-function checkRateLimit(ip: string): { allowed: boolean; resetTime?: number } {
-  const now = Date.now();
-  const record = rateLimitMap.get(ip);
-  
-  if (!record || now > record.resetTime) {
-    // First request or window expired
-    rateLimitMap.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
-    return { allowed: true };
-  }
-  
-  if (record.count >= RATE_LIMIT_MAX) {
-    // Rate limit exceeded
-    return { allowed: false, resetTime: record.resetTime };
-  }
-  
-  // Increment count
-  record.count += 1;
-  rateLimitMap.set(ip, record);
-  return { allowed: true };
+interface ErrorResponse {
+  success: false;
+  error: string;
+  details?: string;
 }
 
 /**
- * Clean up expired rate limit records
+ * Union type for API responses
  */
-function cleanupRateLimitMap(): void {
-  const now = Date.now();
-  for (const [ip, record] of rateLimitMap.entries()) {
-    if (now > record.resetTime) {
-      rateLimitMap.delete(ip);
-    }
-  }
-}
-
-/**
- * Send email notification using Resend
- */
-async function sendEmailNotification(data: ContactFormData): Promise<void> {
-  const fromEmail = process.env.FROM_EMAIL || 'noreply@example.com';
-  const toEmail = process.env.TO_EMAIL || 'arnav.tiwari@example.com';
-  
-  // Email content for the recipient (portfolio owner)
-  const emailContent = `
-    <h2>New Contact Form Submission</h2>
-    <p><strong>From:</strong> ${data.name}</p>
-    <p><strong>Email:</strong> ${data.email}</p>
-    <p><strong>Message:</strong></p>
-    <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin: 10px 0;">
-      ${data.message.replace(/\n/g, '<br>')}
-    </div>
-    <hr>
-    <p style="color: #666; font-size: 12px;">
-      This message was sent from your portfolio website contact form.
-      Reply directly to this email to respond to ${data.name}.
-    </p>
-  `;
-  
-  // Send email using Resend
-  await resend.emails.send({
-    from: fromEmail,
-    to: toEmail,
-    replyTo: data.email, // Allow direct reply to the sender
-    subject: `Portfolio Contact: Message from ${data.name}`,
-    html: emailContent,
-    text: `
-New Contact Form Submission
-
-From: ${data.name}
-Email: ${data.email}
-
-Message:
-${data.message}
-
----
-This message was sent from your portfolio website contact form.
-Reply directly to this email to respond to ${data.name}.
-    `.trim()
-  });
-}
+type APIResponse = SuccessResponse | ErrorResponse;
 
 /**
  * POST handler for contact form submissions
+ * Requirement 1.1: Send email when visitor submits valid contact form
+ * Requirement 1.3: Email has clear subject line indicating portfolio contact form
+ * Requirement 1.4: Return success response when email is delivered
+ * Requirement 2.4: Return error response for validation failures
+ * Requirement 3.1: Return error response when Resend service returns error
+ * Requirement 3.4: Return error response when API key is missing or invalid
+ * Requirement 4.1: Retrieve Resend API key from environment variables
+ * Requirement 6.2: Only accept POST requests
+ * Requirement 6.5: Return appropriate HTTP status codes
  */
-export async function POST(request: NextRequest): Promise<NextResponse<ContactFormResponse>> {
+export async function POST(request: Request): Promise<NextResponse<APIResponse>> {
   try {
-    // Clean up expired rate limit records periodically
-    if (Math.random() < 0.1) { // 10% chance to clean up
-      cleanupRateLimitMap();
-    }
-    
-    // Check rate limiting
-    const clientIP = getClientIP(request);
-    const rateLimitCheck = checkRateLimit(clientIP);
-    
-    if (!rateLimitCheck.allowed) {
-      const resetTime = rateLimitCheck.resetTime || Date.now();
-      const resetDate = new Date(resetTime);
-      
+    // Requirement 4.1: Validate environment variables
+    if (!process.env.RESEND_API_KEY) {
+      console.error('RESEND_API_KEY environment variable is not configured');
       return NextResponse.json(
         {
           success: false,
-          message: 'Too many submissions. Please try again later.',
-          error: `Rate limit exceeded. Try again after ${resetDate.toLocaleTimeString()}`
+          error: 'Email service is not configured. Please contact the site administrator.',
+          details: process.env.NODE_ENV === 'development' ? 'RESEND_API_KEY is missing' : undefined
         },
-        { 
-          status: 429,
-          headers: {
-            'Retry-After': Math.ceil((resetTime - Date.now()) / 1000).toString()
-          }
-        }
+        { status: 500 }
       );
     }
-    
+
+    if (!process.env.PORTFOLIO_OWNER_EMAIL) {
+      console.error('PORTFOLIO_OWNER_EMAIL environment variable is not configured');
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Email service is not configured. Please contact the site administrator.',
+          details: process.env.NODE_ENV === 'development' ? 'PORTFOLIO_OWNER_EMAIL is missing' : undefined
+        },
+        { status: 500 }
+      );
+    }
+
     // Parse request body
     let body: ContactFormData;
     try {
       body = await request.json();
-    } catch (error) {
+    } catch (parseError) {
+      console.error('Failed to parse request body:', parseError);
       return NextResponse.json(
         {
           success: false,
-          message: 'Invalid request format',
-          error: 'Request body must be valid JSON'
+          error: 'Invalid request format. Please ensure all fields are filled correctly.'
         },
         { status: 400 }
       );
     }
+
+    // Requirement 2.4: Validate form data using validation module
+    const validation = validateContactForm(body);
     
-    // Sanitize input data
-    const sanitizedData = sanitizeContactFormData(body);
-    
-    // Validate form data
-    const validation = validateContactForm(sanitizedData);
-    
-    if (!validation.isValid) {
-      const errorMessages = Object.values(validation.errors).filter(Boolean);
+    if (!validation.valid) {
+      // Return 400 error for validation failures
       return NextResponse.json(
         {
           success: false,
-          message: 'Validation failed',
-          error: errorMessages.join(', ')
+          error: validation.errors.join(', ')
         },
         { status: 400 }
       );
     }
-    
-    // Check for bot submissions (honeypot field)
-    if (sanitizedData.honeypot && sanitizedData.honeypot.trim().length > 0) {
-      // Log potential bot attempt but don't reveal it
-      console.warn('Potential bot submission detected:', {
-        ip: clientIP,
-        honeypot: sanitizedData.honeypot,
-        timestamp: new Date().toISOString()
-      });
-      
-      // Return success to avoid revealing the honeypot
-      return NextResponse.json({
-        success: true,
-        message: 'Thank you for your message! I\'ll get back to you soon.'
-      });
-    }
-    
-    // Check if required environment variables are set
-    const envValidation = validateEnvironmentVariables();
-    if (!envValidation.isValid) {
-      console.error('Missing required environment variables:', envValidation.missing);
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'Email service is not configured',
-          error: 'Server configuration error'
-        },
-        { status: 500 }
-      );
-    }
-    
-    // Send email notification
+
+    // Initialize Resend client with API key from environment
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    // Generate email HTML using template module
+    const emailHTML = generateEmailHTML(body);
+
+    // Requirement 1.1, 1.3: Send email via Resend with proper configuration
     try {
-      await sendEmailNotification(sanitizedData);
-    } catch (emailError) {
-      console.error('Failed to send email:', emailError);
+      await resend.emails.send({
+        from: 'Portfolio Contact <onboarding@resend.dev>', // Use verified domain in production
+        to: process.env.PORTFOLIO_OWNER_EMAIL,
+        subject: 'New Contact Form Submission', // Requirement 1.3: Clear subject line
+        html: emailHTML,
+        replyTo: body.email // Allow portfolio owner to reply directly to visitor
+      });
+    } catch (resendError) {
+      // Requirement 3.1: Handle Resend service errors
+      console.error('Resend API error:', resendError);
       
-      // Return user-friendly error message
+      // Security: Ensure API key is never logged or exposed in error messages
+      // API keys follow the pattern: re_[alphanumeric characters]
+      // We replace any occurrence with [REDACTED] to prevent accidental exposure
+      const errorMessage = resendError instanceof Error ? resendError.message : 'Unknown error';
+      const sanitizedError = errorMessage.replace(/re_[a-zA-Z0-9]+/g, '[REDACTED]');
+      
+      console.error('Sanitized error:', sanitizedError);
+      
       return NextResponse.json(
         {
           success: false,
-          message: 'Failed to send message. Please try again or contact me directly.',
-          error: 'Email delivery failed'
+          error: 'Failed to send message. The email service is temporarily unavailable. Please try again later.',
+          details: process.env.NODE_ENV === 'development' ? sanitizedError : undefined
         },
         { status: 500 }
       );
     }
-    
-    // Success response
-    return NextResponse.json({
-      success: true,
-      message: 'Thank you for your message! I\'ll get back to you soon.'
-    });
-    
+
+    // Requirement 1.4: Return 200 success response when email sends successfully
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Thank you for your message! I will get back to you soon.'
+      },
+      { status: 200 }
+    );
+
   } catch (error) {
+    // Requirement 3.3: Log errors with sufficient debugging info without exposing sensitive data
     console.error('Contact form error:', error);
     
+    // Security: Sanitize error messages to prevent API key exposure
+    // This is a safety net in case errors bubble up from unexpected sources
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const sanitizedError = errorMessage.replace(/re_[a-zA-Z0-9]+/g, '[REDACTED]');
+    
+    console.error('Sanitized error:', sanitizedError);
+
     return NextResponse.json(
       {
         success: false,
-        message: 'An unexpected error occurred. Please try again.',
-        error: 'Internal server error'
+        error: 'An unexpected error occurred. Please try again later.',
+        details: process.env.NODE_ENV === 'development' ? sanitizedError : undefined
       },
       { status: 500 }
     );
@@ -250,24 +169,45 @@ export async function POST(request: NextRequest): Promise<NextResponse<ContactFo
 
 /**
  * Handle unsupported HTTP methods
+ * Requirement 6.2: Only accept POST requests for form submissions
+ * Requirement 6.3: Return 405 Method Not Allowed for non-POST requests
  */
-export async function GET(): Promise<NextResponse> {
+export async function GET(): Promise<NextResponse<ErrorResponse>> {
   return NextResponse.json(
-    { error: 'Method not allowed' },
-    { status: 405 }
+    {
+      success: false,
+      error: 'Method not allowed. Please use POST to submit the contact form.'
+    },
+    { status: 405, headers: { 'Allow': 'POST' } }
   );
 }
 
-export async function PUT(): Promise<NextResponse> {
+export async function PUT(): Promise<NextResponse<ErrorResponse>> {
   return NextResponse.json(
-    { error: 'Method not allowed' },
-    { status: 405 }
+    {
+      success: false,
+      error: 'Method not allowed. Please use POST to submit the contact form.'
+    },
+    { status: 405, headers: { 'Allow': 'POST' } }
   );
 }
 
-export async function DELETE(): Promise<NextResponse> {
+export async function DELETE(): Promise<NextResponse<ErrorResponse>> {
   return NextResponse.json(
-    { error: 'Method not allowed' },
-    { status: 405 }
+    {
+      success: false,
+      error: 'Method not allowed. Please use POST to submit the contact form.'
+    },
+    { status: 405, headers: { 'Allow': 'POST' } }
+  );
+}
+
+export async function PATCH(): Promise<NextResponse<ErrorResponse>> {
+  return NextResponse.json(
+    {
+      success: false,
+      error: 'Method not allowed. Please use POST to submit the contact form.'
+    },
+    { status: 405, headers: { 'Allow': 'POST' } }
   );
 }

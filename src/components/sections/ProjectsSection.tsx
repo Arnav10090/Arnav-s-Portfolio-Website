@@ -60,7 +60,7 @@ export const ProjectsSection: React.FC<{ id?: string }> = ({ id }) => {
                 className="text-left"
                 id="projects-heading"
               >
-                Featured Projects
+                Personal Projects
               </SectionHeading>
             </div>
 
@@ -86,12 +86,12 @@ export const ProjectsSection: React.FC<{ id?: string }> = ({ id }) => {
 
           {/* Right side: Decorative Background (15%) */}
           <div className="hidden lg:block lg:w-[15%] relative min-h-[600px]">
-             <DecorativeBackground position="right" className="!static !w-full !h-full" />
+            <DecorativeBackground position="right" variant="compact" className="!static !w-full !h-full" />
           </div>
         </div>
 
         {/* Call to Action - responsive spacing */}
-        <div 
+        <div
           className={cn(
             "text-center mt-16 sm:mt-20 md:mt-24 transition-all duration-600",
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -105,13 +105,13 @@ export const ProjectsSection: React.FC<{ id?: string }> = ({ id }) => {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <a
-              href="https://github.com/arnavtiwari"
+              href="https://github.com/Arnav10090"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center h-11 sm:h-12 min-h-[44px] px-5 sm:px-6 rounded-xl font-medium transition-all duration-300 ease-out bg-transparent text-text-secondary border border-border hover:bg-surface hover:border-primary-500/30 hover:text-text-primary"
               aria-label="View all projects on GitHub"
             >
-               View All Projects
+              View All Projects
             </a>
             <a
               href="#contact"

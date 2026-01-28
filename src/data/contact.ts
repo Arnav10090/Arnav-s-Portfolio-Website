@@ -15,13 +15,13 @@ export const contactInfo = {
 export const socialLinks: NavigationItem[] = [
   {
     label: 'LinkedIn',
-    href: 'https://linkedin.com/in/arnavtiwari',
+    href: 'https://www.linkedin.com/in/arnav-tiwari-063278253/',
     external: true,
     icon: 'linkedin'
   },
   {
     label: 'GitHub',
-    href: 'https://github.com/arnavtiwari',
+    href: 'https://github.com/Arnav10090',
     external: true,
     icon: 'github'
   },
@@ -33,7 +33,7 @@ export const socialLinks: NavigationItem[] = [
   },
   {
     label: 'Twitter',
-    href: 'https://twitter.com/arnavtiwari',
+    href: 'https://x.com/Arnav_IIITN',
     external: true,
     icon: 'twitter'
   }

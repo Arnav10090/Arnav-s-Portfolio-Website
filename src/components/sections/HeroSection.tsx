@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { personalInfo } from '@/data/metadata';
 import { trackResumeDownload } from '@/lib/analytics';
@@ -22,25 +23,25 @@ export function HeroSection() {
     try {
       // Use the API route for proper headers and tracking
       const response = await fetch('/api/resume');
-      
+
       if (!response.ok) {
         throw new Error('Failed to download resume');
       }
-      
+
       // Get the blob and create download link
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      
+
       const link = document.createElement('a');
       link.href = url;
       link.download = 'Arnav_Tiwari_Resume.pdf';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
+
       // Clean up the blob URL
       window.URL.revokeObjectURL(url);
-      
+
       // Track analytics event
       trackResumeDownload('hero_section');
     } catch (error) {
@@ -59,18 +60,18 @@ export function HeroSection() {
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!profileCardRef.current) return;
-      
+
       const card = profileCardRef.current;
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      
+
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
-      
+
       const rotateX = ((y - centerY) / centerY) * -2; // max 2deg
       const rotateY = ((x - centerX) / centerX) * 2; // max 2deg
-      
+
       setMousePosition({ x: rotateY, y: rotateX });
     };
 
@@ -82,7 +83,7 @@ export function HeroSection() {
     if (card) {
       card.addEventListener('mousemove', handleMouseMove);
       card.addEventListener('mouseleave', handleMouseLeave);
-      
+
       return () => {
         card.removeEventListener('mousemove', handleMouseMove);
         card.removeEventListener('mouseleave', handleMouseLeave);
@@ -94,10 +95,16 @@ export function HeroSection() {
   useEffect(() => {
     const handleScroll = throttle(() => {
       if (!heroRef.current) return;
-      
+
+      // Disable parallax on mobile (sm and md breakpoints)
+      if (window.innerWidth < 1024) {
+        heroRef.current.style.transform = 'translateY(0)';
+        return;
+      }
+
       const scrolled = window.scrollY;
       const parallaxSpeed = 0.5;
-      
+
       // Use transform for GPU acceleration
       heroRef.current.style.transform = `translateY(${scrolled * parallaxSpeed}px)`;
     }, 16); // ~60fps
@@ -108,7 +115,7 @@ export function HeroSection() {
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       // Remove will-change on unmount
@@ -119,19 +126,19 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section 
+    <section
       id="hero"
-      className="relative min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-28 lg:pt-[120px] pb-8 sm:pb-10 md:pb-10 lg:pb-[40px] bg-gradient-to-b from-blue-50 to-white dark:from-[#0a0e1a] dark:to-[#1a1f2e]"
+      className="relative min-h-screen flex items-center overflow-hidden pt-20 sm:pt-24 md:pt-28 lg:pt-[120px] pb-20 sm:pb-24 md:pb-28 lg:pb-[40px] bg-gradient-to-b from-blue-50 to-white dark:from-[#0a0e1a] dark:to-[#1a1f2e]"
       aria-label="Hero section"
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]" aria-hidden="true" />
-      
+
       <div ref={heroRef} className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Split-screen layout: stacks on mobile, 50/50 on desktop (min 1024px) */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 items-center">
-          
+
           {/* Left Column - Text Content with responsive padding and max-width */}
-          <div 
+          <div
             className="order-2 lg:order-1 space-y-6 sm:space-y-7 md:space-y-8 text-center lg:text-left lg:pl-12 xl:pl-20 animate-slide-in-left"
             style={{
               maxWidth: '100%'
@@ -139,9 +146,9 @@ export function HeroSection() {
           >
             <div className="space-y-4 sm:space-y-5 md:space-y-6">
               {/* Main name: responsive font sizes */}
-              <h1 
+              <h1
                 className="text-5xl sm:text-6xl md:text-7xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-[1.1]"
-                style={{ 
+                style={{
                   letterSpacing: '-2px',
                   fontFeatureSettings: '"tnum", "lnum"'
                 }}
@@ -149,30 +156,40 @@ export function HeroSection() {
                 {personalInfo.name}
               </h1>
               {/* Subtitle: responsive font sizes */}
-              <p 
+              <p
                 className="text-lg sm:text-xl md:text-2xl text-gray-700 dark:text-white font-medium"
-                style={{ 
+                style={{
                   opacity: 0.7,
                   letterSpacing: '0.5px'
                 }}
               >
                 {personalInfo.role}
               </p>
+              <p
+                className="text-lg sm:text-xl md:text-xl text-blue-600 dark:text-blue-400 font-bold"
+                style={{
+                  fontFeatureSettings: '"tnum", "lnum"',
+                  opacity: 0.9,
+                  letterSpacing: '0.5px'
+                }}
+              >
+                Open to Full-Time Software Engineering Roles
+              </p>
             </div>
-            
+
             {/* Body text: responsive font sizes */}
             <div className="max-w-full sm:max-w-[520px] mx-auto lg:mx-0">
-              <p 
+              <p
                 className="text-base sm:text-lg text-gray-600 dark:text-white"
-                style={{ 
+                style={{
                   lineHeight: '1.7',
                   opacity: 0.8
                 }}
               >
-                Software engineering student at <span className="text-gray-900 dark:text-white font-medium" style={{ opacity: 1 }}>IIIT Nagpur</span> building scalable, production-grade applications using <span className="text-gray-900 dark:text-white font-medium" style={{ opacity: 1 }}>Next.js</span> and <span className="text-gray-900 dark:text-white font-medium" style={{ opacity: 1 }}>AI-powered systems</span>.
+                Final Year Computer Science Engineering Student at <span className="text-gray-900 dark:text-white font-medium" style={{ opacity: 1 }}>IIIT Nagpur</span> and AI Enabled Full Stack Developer who is interested in building scalable, production-grade applications.
               </p>
             </div>
-            
+
             {/* CTA Buttons with hover effects - stack on mobile, row on tablet+ */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-2 sm:pt-4">
               <Button
@@ -200,13 +217,13 @@ export function HeroSection() {
           </div>
 
           {/* Right Column - Profile Card (vertically centered) - responsive sizing */}
-          <div 
+          <div
             className="order-1 lg:order-2 flex justify-center lg:justify-end items-center animate-slide-in-right"
             style={{
               animationDelay: '0.2s'
             }}
           >
-            <div 
+            <div
               ref={profileCardRef}
               className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-88 md:h-88 lg:w-[28rem] lg:h-[28rem] xl:w-[32rem] xl:h-[32rem] transition-transform duration-300 ease-out"
               style={{
@@ -215,65 +232,35 @@ export function HeroSection() {
                 willChange: 'transform'
               }}
             >
-               {/* Glassmorphism Card with backdrop-blur-xl and rgba(30, 41, 59, 0.5) */}
-               <div 
-                 className="absolute inset-0 backdrop-blur-xl rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10"
-                 style={{
-                   background: 'rgba(30, 41, 59, 0.5)',
-                   boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2)',
-                   contain: 'layout style paint'
-                 }}
-               >
-                 <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center">
-                    {/* Placeholder Icon */}
-                    <svg
-                      className="w-1/3 h-1/3 text-gray-400 dark:text-gray-400"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                    </svg>
-                 </div>
-               </div>
-
-               {/* Status Badge with pulsing green dot - responsive sizing */}
-               <div 
-                 className="absolute bottom-4 left-4 sm:bottom-5 sm:left-5 md:bottom-6 md:left-6 backdrop-blur-md p-3 sm:p-4 rounded-lg sm:rounded-xl shadow-lg flex items-center gap-2 sm:gap-3 border border-gray-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/80"
-                 style={{
-                   contain: 'layout style paint'
-                 }}
-               >
-                  <div 
-                    className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full relative"
-                    style={{
-                      background: '#10b981',
-                      animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
-                    }}
-                  >
-                    <div 
-                      className="absolute inset-0 rounded-full"
-                      style={{
-                        background: '#10b981',
-                        filter: 'blur(4px)',
-                        animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider">Status</p>
-                    <p className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white">Open to Work</p>
-                  </div>
-               </div>
+              {/* Glassmorphism Card with backdrop-blur-xl and rgba(30, 41, 59, 0.5) */}
+              <div
+                className="absolute inset-0 backdrop-blur-xl rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10"
+                style={{
+                  background: 'rgba(30, 41, 59, 0.5)',
+                  boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2)',
+                  contain: 'layout style paint'
+                }}
+              >
+                <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center relative">
+                  <Image
+                    src="/images/me.jpg"
+                    alt={personalInfo.name}
+                    fill
+                    className="object-cover"
+                    priority
+                    sizes="(max-width: 640px) 16rem, (max-width: 768px) 20rem, (max-width: 1024px) 22rem, 32rem"
+                  />
+                </div>
+              </div>
             </div>
           </div>
-          
+
         </div>
       </div>
-      
+
       {/* Animated Scroll Indicator with bounce animation - hide on mobile */}
-      <div 
-        className="hidden sm:flex absolute bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2" 
+      <div
+        className="hidden sm:flex absolute bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2"
         aria-hidden="true"
         style={{
           animation: 'bounceSubtle 2s ease-in-out infinite'

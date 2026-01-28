@@ -195,31 +195,52 @@ export const ContactForm = memo(function ContactForm({ className }: ContactFormP
 
     try {
       const sanitizedData = sanitizeContactFormData(formData);
-      const response = await fetch('/api/contact', {
+      
+      // Submit to Formspree endpoint
+      // In Next.js client components, environment variables are available at build time
+      const formspreeEndpoint = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
+      
+      if (!formspreeEndpoint) {
+        console.error('NEXT_PUBLIC_FORMSPREE_ENDPOINT is not configured');
+        setSubmitStatus({
+          type: 'error',
+          message: 'Contact form is not configured. Please try again later.'
+        });
+        setValidationState(prev => ({ ...prev, isSubmitting: false }));
+        return;
+      }
+
+      console.log('Submitting to Formspree:', formspreeEndpoint);
+
+      const response = await fetch(formspreeEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify(sanitizedData),
       });
 
-      const result: ContactFormResponse = await response.json();
+      console.log('Formspree response status:', response.status);
 
-      if (response.ok && result.success) {
+      if (response.ok) {
         setSubmitStatus({
           type: 'success',
-          message: result.message || 'Thank you for your message! I\'ll get back to you soon.'
+          message: 'Thank you for your message! I\'ll get back to you soon.'
         });
         trackContactSubmit();
         setFormData({ name: '', email: '', message: '', honeypot: '' });
         setValidationState({ isValid: false, errors: {}, isSubmitted: false, isSubmitting: false });
       } else {
+        const result = await response.json().catch(() => ({}));
+        console.error('Formspree error:', result);
         setSubmitStatus({
           type: 'error',
-          message: result.error || result.message || 'Something went wrong. Please try again.'
+          message: result.error || result.errors?.map((e: any) => e.message).join(', ') || 'Something went wrong. Please try again.'
         });
       }
     } catch (error) {
+      console.error('Form submission error:', error);
       setSubmitStatus({
         type: 'error',
         message: 'Unable to send message. Please check your connection and try again.'

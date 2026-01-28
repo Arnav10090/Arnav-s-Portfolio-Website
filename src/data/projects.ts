@@ -24,9 +24,9 @@ export const projects: Project[] = [
       'Tailwind CSS'
     ],
     featured: true,
-    imageUrl: '/images/projects/autopilot.webp', // Placeholder, assuming images structure
-    githubUrl: 'https://github.com/arnavtiwari/autopilot', // Placeholder
-    liveUrl: 'https://autopilot-demo.vercel.app' // Placeholder
+    imageUrl: '/images/projects/autopilot-pic.webp', // Placeholder, assuming images structure
+    githubUrl: 'https://github.com/Arnav10090/autopilot-ai', // Placeholder
+    liveUrl: 'https://drive.google.com/drive/folders/1-84TLzj0sAQjrpG2JpKtJ6hxSG7RqriY?usp=sharing'
   },
   {
     id: 'ai-content-generator',
@@ -46,9 +46,9 @@ export const projects: Project[] = [
       'Tailwind CSS'
     ],
     featured: true,
-    imageUrl: '/images/projects/content-gen.webp', // Placeholder
-    githubUrl: 'https://github.com/arnavtiwari/ai-content-gen', // Placeholder
-    liveUrl: 'https://ai-content-gen-demo.vercel.app' // Placeholder
+    imageUrl: '/images/projects/ai-content-pic.webp', // Placeholder
+    githubUrl: 'https://github.com/Arnav10090/Ai-content-generator', // Placeholder
+    liveUrl: 'https://drive.google.com/drive/folders/1xXE_vjTLvuoxLPGrFpws63ZTJb9taBur?usp=sharing'
   },
   {
     id: 'book-store-platform',
@@ -67,9 +67,9 @@ export const projects: Project[] = [
       'Tailwind CSS'
     ],
     featured: false,
-    imageUrl: '/images/projects/bookstore.webp', // Placeholder
-    githubUrl: 'https://github.com/arnavtiwari/bookstore', // Placeholder
-    liveUrl: 'https://bookstore-demo.vercel.app' // Placeholder
+    imageUrl: '/images/projects/bookstore-pic.webp', // Placeholder
+    githubUrl: 'https://github.com/Arnav10090/BookStoreApp', // Placeholder
+    liveUrl: 'https://drive.google.com/drive/folders/1lMtkuTlEySZfb5HmXho0qkMCwin6nDCY?usp=sharing'
   },
   {
     id: 'passvault',
@@ -89,8 +89,8 @@ export const projects: Project[] = [
       'JWT'
     ],
     featured: true,
-    imageUrl: '/images/projects/passvault.webp', // Placeholder
-    githubUrl: 'https://github.com/arnavtiwari/passvault', // Placeholder
-    liveUrl: 'https://passvault-demo.vercel.app' // Placeholder
+    imageUrl: '/images/projects/passvault-pic.webp', // Placeholder
+    githubUrl: 'https://github.com/Arnav10090/PassVault', // Placeholder
+    liveUrl: 'https://drive.google.com/drive/folders/1q4Ku0e4T5S_vgDZxgKne6n0veLylWoyL?usp=sharing'
   }
 ];

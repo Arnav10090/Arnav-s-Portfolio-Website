@@ -15,7 +15,7 @@ import { DecorativeBackground } from '@/components/ui/DecorativeBackground';
 export function ResumeSection({ id }: { id?: string }) {
   // Initialize scroll animations
   useScrollAnimation();
-  
+
   const handleResumeDownload = async () => {
     try {
       const response = await fetch('/api/resume');
@@ -42,14 +42,16 @@ export function ResumeSection({ id }: { id?: string }) {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
+  const [formattedDate, setFormattedDate] = React.useState<string>('');
+
+  React.useEffect(() => {
+    const date = new Date(resumeDownload.lastUpdated);
+    setFormattedDate(date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
-    });
-  };
+    }));
+  }, []);
 
 
 
@@ -59,7 +61,7 @@ export function ResumeSection({ id }: { id?: string }) {
         <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-16">
           {/* Left side: Decorative Background (30%) */}
           <div className="hidden lg:block lg:w-[30%] relative min-h-[600px]">
-             <DecorativeBackground position="left" className="!static !w-full !h-full" />
+            <DecorativeBackground position="left" variant="sidebar" className="!static !w-full !h-full" />
           </div>
 
           {/* Right side: Resume Content (70%) */}
@@ -67,47 +69,43 @@ export function ResumeSection({ id }: { id?: string }) {
             {/* Center content within this column for better visual balance if needed, or keep top aligned */}
             <div className="max-w-xl w-full">
               <div className="flex flex-col items-center lg:items-start">
-                
+
                 {/* Section heading */}
-                <SectionHeading 
-                  subtitle="Download my complete professional resume" 
+                <SectionHeading
+                  subtitle="Download my complete professional resume"
                   id="resume-heading"
                   className="!text-3xl sm:!text-4xl md:!text-5xl !font-bold text-center lg:text-left mb-8"
                 >
                   Resume
                 </SectionHeading>
-                
+
                 {/* Resume card */}
                 <div className="w-full" data-animate="fade-up">
-                   <div className="group relative bg-white dark:bg-[rgba(30,41,59,0.5)] backdrop-blur-xl border border-gray-200 dark:border-[rgba(255,255,255,0.1)] rounded-lg p-6 sm:p-8 flex flex-col items-center text-center shadow-floating transition-all duration-500 hover:translate-y-[-4px] hover:shadow-[0_24px_30px_-5px_rgba(0,0,0,0.15),0_12px_12px_-5px_rgba(0,0,0,0.06)] animate-scale-in">
-                      {/* Document icon */}
-                      <div className="w-16 h-16 bg-blue-50 dark:bg-primary-600/20 rounded-2xl flex items-center justify-center mb-6 text-blue-600 dark:text-primary-400 shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] group-hover:animate-bounce-subtle">
-                        <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  <div className="group relative bg-white dark:bg-[rgba(30,41,59,0.5)] backdrop-blur-xl border border-gray-200 dark:border-[rgba(255,255,255,0.1)] rounded-lg p-6 sm:p-8 flex flex-col items-center text-center shadow-floating transition-all duration-500 hover:translate-y-[-4px] hover:shadow-[0_24px_30px_-5px_rgba(0,0,0,0.15),0_12px_12px_-5px_rgba(0,0,0,0.06)] animate-scale-in">
+                    {/* Document icon */}
+                    <div className="w-16 h-16 bg-blue-50 dark:bg-primary-600/20 rounded-2xl flex items-center justify-center mb-6 text-blue-600 dark:text-primary-400 shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] group-hover:animate-bounce-subtle">
+                      <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </div>
+
+                    <h3 className="text-xl sm:text-2xl font-medium text-gray-900 dark:text-text-primary mb-2">{resumeDownload.filename}</h3>
+
+                    <Button
+                      variant="primary"
+                      size="lg"
+                      onClick={handleResumeDownload}
+                      className="w-full sm:w-auto min-w-[200px] min-h-[48px] bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/40 flex items-center justify-center rounded-xl transition-all duration-300 transform hover:-translate-y-0.5"
+                      aria-label="Download resume as PDF"
+                    >
+                      <span className="flex items-center gap-2">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                         </svg>
-                      </div>
-                      
-                      <h3 className="text-xl sm:text-2xl font-medium text-gray-900 dark:text-text-primary mb-2">{resumeDownload.filename}</h3>
-                      
-                      <p className="text-sm text-gray-500 dark:text-text-secondary opacity-70 mb-8">
-                        PDF Format <span className="mx-1">·</span> {resumeDownload.size} <span className="mx-1">·</span> Last updated {formatDate(resumeDownload.lastUpdated)}
-                      </p>
-                      
-                      <Button
-                        variant="primary"
-                        size="lg"
-                        onClick={handleResumeDownload}
-                        className="w-full sm:w-auto min-w-[200px] min-h-[48px] bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-600/40 flex items-center justify-center rounded-xl transition-all duration-300 transform hover:-translate-y-0.5"
-                        aria-label="Download resume as PDF"
-                      >
-                        <span className="flex items-center gap-2">
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                          </svg>
-                          <span>Download Resume</span>
-                        </span>
-                      </Button>
-                   </div>
+                        <span>Download Resume</span>
+                      </span>
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

@@ -25,56 +25,33 @@ export function SkillsSection({ id }: { id?: string }) {
               Technical Skills
             </SectionHeading>
 
-            {/* Responsive grid for skills */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-7 md:gap-8 animate-fade-up">
-              {Object.entries(skillCategories).map(([category, skills]) => {
-                const titles: Record<string, string> = {
-                  frontend: 'Frontend Development',
-                  backend: 'Backend Engineering',
-                  enterprise: 'Enterprise Systems', 
-                  database: 'Database & Cloud',
-                  tools: 'DevOps & Tools',
-                  softSkills: 'Leadership & Strategy'
-                };
-                
-                // Brand colors mapping for original logo colors
-                const brandColors: Record<string, string> = {
-                   'React': '#61DAFB',
-                   'Next.js': 'var(--text-primary)',
-                   'TypeScript': '#3178C6',
-                   'Tailwind CSS': '#06B6D4',
-                   'HTML5': '#E34F26',
-                   'CSS3': '#1572B6',
-                   'JavaScript': '#F7DF1E',
-                   'Figma': '#F24E1E',
-                   'Node.js': '#339933',
-                   'Express.js': 'var(--text-primary)',
-                   'Django': '#092E20',
-                   'Java': '#007396',
-                   'PostgreSQL': '#336791',
-                   'MongoDB': '#47A248',
-                   'MySQL': '#4479A1',
-                   'Docker': '#2496ED',
-                   'Kubernetes': '#326CE5',
-                   'Git': '#F05032',
-                   'GitHub Actions': '#2088FF',
-                   'Postman': '#FF6C37',
-                };
-
-                return (
-                  <Card key={category} variant="base" className="p-5 sm:p-6 hover:border-primary-500/30 transition-colors h-full">
-                    <h3 className="text-lg font-semibold text-text-primary mb-4 sm:mb-5">
-                      {titles[category] || category}
-                    </h3>
-                    <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                      {skills.map((skill) => (
-                        <div 
-                          key={skill.name} 
+            {/* 3-row x 2-column grid layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-7 md:gap-8 animate-fade-up">
+              {/* Row 1 Left: Programming Languages */}
+              {skillCategories.languages && (
+                <Card variant="base" className="p-5 sm:p-6 hover:border-primary-500/30 transition-colors">
+                  <h3 className="text-lg font-semibold text-text-primary mb-4 sm:mb-5">
+                    Programming Languages
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                    {skillCategories.languages.map((skill) => {
+                      const brandColors: Record<string, string> = {
+                        'JavaScript': '#F7DF1E',
+                        'TypeScript': '#3178C6',
+                        'Python': '#3776AB',
+                        'Java': '#007396',
+                        'C++': '#00599C',
+                        'C': '#A8B9CC',
+                      };
+                      
+                      return (
+                        <div
+                          key={skill.name}
                           className="group flex flex-col items-center gap-3 p-3 rounded-lg transition-colors justify-center"
                         >
                           {skill.icon ? (
-                            <skill.icon 
-                              className="w-10 h-10 sm:w-12 sm:h-12 transition-colors duration-300" 
+                            <skill.icon
+                              className="w-10 h-10 sm:w-12 sm:h-12 transition-colors duration-300"
                               style={{ color: brandColors[skill.name] || 'var(--text-secondary)' }}
                             />
                           ) : (
@@ -84,37 +61,233 @@ export function SkillsSection({ id }: { id?: string }) {
                             {skill.name}
                           </span>
                         </div>
-                      ))}
-                    </div>
-                  </Card>
-                );
-              })}
+                      );
+                    })}
+                  </div>
+                </Card>
+              )}
+
+              {/* Row 1 Right: Frontend Engineering */}
+              {skillCategories.frontend && (
+                <Card variant="base" className="p-5 sm:p-6 hover:border-primary-500/30 transition-colors">
+                  <h3 className="text-lg font-semibold text-text-primary mb-4 sm:mb-5">
+                    Frontend Engineering
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                    {skillCategories.frontend.map((skill) => {
+                      const brandColors: Record<string, string> = {
+                        'React': '#61DAFB',
+                        'Next.js': 'var(--text-primary)',
+                        'Tailwind CSS': '#06B6D4',
+                        'HTML5': '#E34F26',
+                        'CSS3': '#1572B6',
+                        'Figma': '#F24E1E',
+                      };
+                      
+                      return (
+                        <div
+                          key={skill.name}
+                          className="group flex flex-col items-center gap-3 p-3 rounded-lg transition-colors justify-center"
+                        >
+                          {skill.icon ? (
+                            <skill.icon
+                              className="w-10 h-10 sm:w-12 sm:h-12 transition-colors duration-300"
+                              style={{ color: brandColors[skill.name] || 'var(--text-secondary)' }}
+                            />
+                          ) : (
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-surface-elevated" />
+                          )}
+                          <span className="text-sm sm:text-base font-medium text-text-secondary group-hover:text-text-primary transition-colors text-center">
+                            {skill.name}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </Card>
+              )}
+
+              {/* Row 2 Left: Backend & API Engineering */}
+              {skillCategories.backend && (
+                <Card variant="base" className="p-5 sm:p-6 hover:border-primary-500/30 transition-colors">
+                  <h3 className="text-lg font-semibold text-text-primary mb-4 sm:mb-5">
+                    Backend & API Engineering
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                    {skillCategories.backend.map((skill) => {
+                      const brandColors: Record<string, string> = {
+                        'Node.js': '#339933',
+                        'Express.js': 'var(--text-primary)',
+                        'Django': '#092E20',
+                        'RESTful API Design': '#FF6C37',
+                        'Authentication & Authorization': '#8B5CF6',
+                      };
+                      
+                      return (
+                        <div
+                          key={skill.name}
+                          className="group flex flex-col items-center gap-3 p-3 rounded-lg transition-colors justify-center"
+                        >
+                          {skill.icon ? (
+                            <skill.icon
+                              className="w-10 h-10 sm:w-12 sm:h-12 transition-colors duration-300"
+                              style={{ color: brandColors[skill.name] || 'var(--text-secondary)' }}
+                            />
+                          ) : (
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-surface-elevated" />
+                          )}
+                          <span className="text-sm sm:text-base font-medium text-text-secondary group-hover:text-text-primary transition-colors text-center">
+                            {skill.name}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </Card>
+              )}
+
+              {/* Row 2 Right: Databases & Data Layer */}
+              {skillCategories.database && (
+                <Card variant="base" className="p-5 sm:p-6 hover:border-primary-500/30 transition-colors">
+                  <h3 className="text-lg font-semibold text-text-primary mb-4 sm:mb-5">
+                    Databases & Data Layer
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                    {skillCategories.database.map((skill) => {
+                      const brandColors: Record<string, string> = {
+                        'PostgreSQL': '#336791',
+                        'MySQL': '#4479A1',
+                        'MongoDB': '#47A248',
+                        'ORM / ODM': '#10B981',
+                      };
+                      
+                      return (
+                        <div
+                          key={skill.name}
+                          className="group flex flex-col items-center gap-3 p-3 rounded-lg transition-colors justify-center"
+                        >
+                          {skill.icon ? (
+                            <skill.icon
+                              className="w-10 h-10 sm:w-12 sm:h-12 transition-colors duration-300"
+                              style={{ color: brandColors[skill.name] || 'var(--text-secondary)' }}
+                            />
+                          ) : (
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-surface-elevated" />
+                          )}
+                          <span className="text-sm sm:text-base font-medium text-text-secondary group-hover:text-text-primary transition-colors text-center">
+                            {skill.name}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </Card>
+              )}
+
+              {/* Row 3 Left: Cloud, DevOps & Delivery */}
+              {skillCategories.devops && (
+                <Card variant="base" className="p-5 sm:p-6 hover:border-primary-500/30 transition-colors">
+                  <h3 className="text-lg font-semibold text-text-primary mb-4 sm:mb-5">
+                    Cloud, DevOps & Delivery
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                    {skillCategories.devops.map((skill) => {
+                      const brandColors: Record<string, string> = {
+                        'Docker': '#2496ED',
+                        'Kubernetes': '#326CE5',
+                        'Git': '#F05032',
+                        'GitHub Actions': '#2088FF',
+                        'CI/CD Pipelines': '#FF6C37',
+                        'Postman': '#FF6C37',
+                      };
+                      
+                      return (
+                        <div
+                          key={skill.name}
+                          className="group flex flex-col items-center gap-3 p-3 rounded-lg transition-colors justify-center"
+                        >
+                          {skill.icon ? (
+                            <skill.icon
+                              className="w-10 h-10 sm:w-12 sm:h-12 transition-colors duration-300"
+                              style={{ color: brandColors[skill.name] || 'var(--text-secondary)' }}
+                            />
+                          ) : (
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-surface-elevated" />
+                          )}
+                          <span className="text-sm sm:text-base font-medium text-text-secondary group-hover:text-text-primary transition-colors text-center">
+                            {skill.name}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </Card>
+              )}
+
+              {/* Row 3 Right: AI & Engineering Practices */}
+              {skillCategories.aiPractices && (
+                <Card variant="base" className="p-5 sm:p-6 hover:border-primary-500/30 transition-colors">
+                  <h3 className="text-lg font-semibold text-text-primary mb-4 sm:mb-5">
+                    AI & Engineering Practices
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                    {skillCategories.aiPractices.map((skill) => {
+                      const brandColors: Record<string, string> = {
+                        'AI / LLM Integration': '#F59E0B',
+                        'Prompt Engineering': '#8B5CF6',
+                        'System Thinking': '#3B82F6',
+                        'Problem Solving': '#8B5CF6',
+                        'Team Collaboration': '#10B981',
+                      };
+                      
+                      return (
+                        <div
+                          key={skill.name}
+                          className="group flex flex-col items-center gap-3 p-3 rounded-lg transition-colors justify-center"
+                        >
+                          {skill.icon ? (
+                            <skill.icon
+                              className="w-10 h-10 sm:w-12 sm:h-12 transition-colors duration-300"
+                              style={{ color: brandColors[skill.name] || 'var(--text-secondary)' }}
+                            />
+                          ) : (
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-surface-elevated" />
+                          )}
+                          <span className="text-sm sm:text-base font-medium text-text-secondary group-hover:text-text-primary transition-colors text-center">
+                            {skill.name}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </Card>
+              )}
             </div>
 
-             {/* Strategic Focus Area */}
-             <div className="mt-12 sm:mt-16 animate-fade-up" style={{ animationDelay: '200ms' }}>
-               <div className="relative rounded-xl overflow-hidden p-[1px]">
-                 <div className="absolute inset-0 bg-gradient-to-r from-blue-200 to-indigo-200 dark:from-blue-500/20 dark:to-purple-500/20 opacity-50" />
-                 <div className="relative bg-white dark:bg-[#0a0e1a] border border-transparent dark:border-white/10 rounded-xl p-6 sm:p-8 text-center shadow-sm">
-                    <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2">Strategic Focus Areas</h3>
-                    <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-xl mx-auto mb-4 leading-relaxed">
-                      Specializing in <span className="text-blue-600 dark:text-blue-400 font-medium">React</span> ecosystem and <span className="text-blue-600 dark:text-blue-400 font-medium">.NET</span> architecture.
-                    </p>
-                    <div className="flex flex-wrap justify-center gap-2">
-                       {['React', 'Next.js', '.NET Core', 'System Design'].map(skill => (
-                          <span key={skill} className="px-3 py-1 text-xs sm:text-sm rounded-lg bg-blue-50 dark:bg-white/5 text-blue-700 dark:text-blue-100 font-medium">
-                            {skill}
-                          </span>
-                       ))}
-                    </div>
-                 </div>
-               </div>
-             </div>
+            {/* Strategic Focus Area */}
+            <div className="mt-12 sm:mt-16 animate-fade-up" style={{ animationDelay: '200ms' }}>
+              <div className="relative rounded-xl overflow-hidden p-[1px]">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-200 to-indigo-200 dark:from-blue-500/20 dark:to-purple-500/20 opacity-50" />
+                <div className="relative bg-white dark:bg-[#0a0e1a] border border-transparent dark:border-white/10 rounded-xl p-6 sm:p-8 text-center shadow-sm">
+                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2">Strategic Focus Areas</h3>
+                  <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-xl mx-auto mb-4 leading-relaxed">
+                    Specializing in <span className="text-blue-600 dark:text-blue-400 font-medium">AI enabled Full Stack </span> ecosystems and <span className="text-blue-600 dark:text-blue-400 font-medium">Multi AI Agentic applications</span>.
+                  </p>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {['React', 'Next.js', 'Node.js', 'LLM APIs', 'Django'].map(skill => (
+                      <span key={skill} className="px-3 py-1 text-xs sm:text-sm rounded-lg bg-blue-50 dark:bg-white/5 text-blue-700 dark:text-blue-100 font-medium">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Right side: Decorative Background (15%) */}
           <div className="hidden lg:block lg:w-[15%] relative min-h-[600px]">
-            <DecorativeBackground position="right" className="!static !w-full !h-full" />
+            <DecorativeBackground position="right" variant="compact" className="!static !w-full !h-full" />
           </div>
         </div>
       </div>

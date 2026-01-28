@@ -146,7 +146,7 @@ export function ContactSection({ className, id }: ContactSectionProps) {
             </h3>
             <p className="text-base sm:text-lg text-text-secondary mb-6 sm:mb-8 max-w-2xl mx-auto">
               I'm passionate about creating impactful software solutions and would love to 
-              discuss how my skills in React, .NET MVC, and full-stack development can 
+              discuss how my skills in full-stack and Agentic AI development can 
               contribute to your team's success.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
